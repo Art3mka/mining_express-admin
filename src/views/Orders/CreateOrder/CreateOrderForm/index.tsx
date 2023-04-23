@@ -28,10 +28,6 @@ const inputData = [
         key: 'brand',
         label: 'Бренд',
     },
-    {
-        key: 'article',
-        label: 'Артикул',
-    },
 ]
 
 interface CreateOrderFormProps {
