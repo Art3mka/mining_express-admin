@@ -4,29 +4,38 @@ import './index.scss'
 import Input from '../../../../components/Input'
 
 interface IFormInput {
-    description: string
-    lastName: string
-    age: string
-    grow: string
-    throw: string
+    busStopName: string
+    date: string
+    departureTime: string
+    phone: string
+    routeName: string
+    seatsCount: string
 }
 
 const inputData = [
     {
-        key: 'description',
-        label: 'Описание',
+        key: 'busStopName',
+        label: 'Название остановки',
     },
     {
-        key: 'group',
-        label: 'Группа',
+        key: 'date',
+        label: 'Дата',
     },
     {
-        key: 'country',
-        label: 'Страна',
+        key: 'departureTime',
+        label: 'Время отправления',
     },
     {
-        key: 'brand',
-        label: 'Бренд',
+        key: 'phone',
+        label: 'Номер телефона',
+    },
+    {
+        key: 'routeName',
+        label: 'Маршрут',
+    },
+    {
+        key: 'seatsCount',
+        label: 'Кол-во мест',
     },
 ]
 

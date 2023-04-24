@@ -3,67 +3,49 @@ import MaterialReactTable, {
     MaterialReactTableProps,
     MRT_ColumnDef as mrtColumnDef,
 } from 'material-react-table'
-import { Orders, tableProps } from './types'
+import { Drivers, tableProps } from './types'
+import './index.scss'
 
 
-
-const Table = (data: any) => {
+const DriversTable = (data: any) => {
     const sendEmail = (row: any) => {
         console.log('click', row)
     }
 
-    const columns = useMemo<mrtColumnDef<Orders>[]>(
+    const columns = useMemo<mrtColumnDef<Drivers>[]>(
         () => [
             {
-                accessorKey: 'orderId',
+                accessorKey: 'userId',
                 header: 'Номер',
-                size: 10,
+                size: 50,
                 // default
                 filterVariant: 'text', 
             },
             {
-                accessorKey: 'busStopName',
-                header: 'Остановка',
+                accessorKey: 'login',
+                header: 'Login',
                 filterVariant: 'text',
-                size: 30,
-            },
-            {
-                accessorKey: 'departureTime',
-                header: 'Время отправления',
-                size: 30,
-                filterVariant: 'text',
-            },
-            {
-                accessorKey: 'date',
-                header: 'Дата',
-                size: 100,
-                filterVariant: 'text',
+                size: 200,
             },
             {
                 accessorKey: 'phone',
                 header: 'Телефон',
-                size: 100,
+                size: 300,
                 filterVariant: 'text',
             },
             {
-                accessorKey: 'routeName',
-                header: 'Маршрут',
-                size: 100,
-                filterVariant: 'text',
-            },
-            {
-                accessorKey: 'seatsCount',
-                header: 'Кол-во мест',
-                size: 100,
+                accessorKey: 'password',
+                header: 'Password',
+                size: 200,
                 filterVariant: 'text',
             },
         ],
         []
     )
 
-    const [tableData, setTableData] = useState<Orders[]>(() => data)
+    const [tableData, setTableData] = useState<Drivers[]>(() => data)
 
-    const handleSaveRow: MaterialReactTableProps<Orders>['onEditingRowSave'] =
+    const handleSaveRow: MaterialReactTableProps<Drivers>['onEditingRowSave'] =
         async ({ exitEditingMode, row, values }) => {
             // if using flat data and simple accessorKeys/ids, you can just do a simple assignment here.
             tableData[row.index] = values
@@ -94,4 +76,4 @@ const Table = (data: any) => {
     )
 }
 
-export default Table
+export default DriversTable

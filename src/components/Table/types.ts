@@ -1,18 +1,18 @@
-export type Person = {
-    name: string
-    priceSpend: string
-    priceBuy: string
-    code: number
-    city: string
-    state: string
-    btn?: string
+export type Orders = {
+    busStopName: string
+    date: string
+    departureTime: string
+    orderId: number
+    phone: string
+    routeName: string
+    seatsCount?: string
 }
 
 export const data = [
     {
         name: 'Tanner Linsley',
         code: 42,
-        city: 'San Francisco',
+        status: 'San Francisco',
         state: 'California',
         priceBuy: 'California',
         priceSpend: 'California',
@@ -21,7 +21,7 @@ export const data = [
     {
         name: 'Tanner Linsley',
         code: 42,
-        city: 'San Francisco',
+        status: 'San Francisco',
         state: 'California',
         priceBuy: 'California',
         priceSpend: 'California',
@@ -30,7 +30,7 @@ export const data = [
     {
         name: 'Tanner Linsley',
         code: 42,
-        city: 'San Francisco',
+        status: 'San Francisco',
         state: 'California',
         priceBuy: 'California',
         priceSpend: 'California',
@@ -39,7 +39,7 @@ export const data = [
     {
         name: 'Tanner Linsley',
         code: 42,
-        city: 'San Francisco',
+        status: 'San Francisco',
         state: 'California',
         priceBuy: 'California',
         priceSpend: 'California',
@@ -48,7 +48,7 @@ export const data = [
     {
         name: 'Tanner Linsley',
         code: 42,
-        city: 'San Francisco',
+        status: 'San Francisco',
         state: 'California',
         priceBuy: 'California',
         priceSpend: 'California',
@@ -57,7 +57,7 @@ export const data = [
     {
         name: 'Tanner Linsley',
         code: 42,
-        city: 'San Francisco',
+        status: 'San Francisco',
         state: 'California',
         priceBuy: 'California',
         priceSpend: 'California',

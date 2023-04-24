@@ -3,9 +3,10 @@ import axios from "axios";
 interface IMakeRequest {
     url: string;
     data?: any;
-    method?: "get" | "post";
+    method?: "get" | "post" | "patch" | 'put' | 'delete';
     params?: any;
     headers?: any;
+    mode?: string;
 }
 
 export const makeRequest = async ({

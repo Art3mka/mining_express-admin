@@ -8,24 +8,40 @@ import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
 import "./index.scss";
 import Home from "./views/Home";
+import Login from "./components/Login";
 
 const App = () => {
+    const token = true;
     return (
-        <div className="App">
-            <Navbar />
-            <div className="wrapper">
-                <Sidebar />
-                <div className="container">
-                    <div className="row">
-                        <Routes>
-                            <Route path="/" element={<Home />} />
-                            <Route path="/drivers" element={<Drivers />} />
-                            <Route path="/orders" element={<Orders />} />
-                        </Routes>
+        <>
+            {!token ? (
+                <Routes>
+                    <Route path='/login' element={<Login />} />
+                </Routes>
+            ) : (
+                <div className='App'>
+                    <Navbar />
+                    <div className='wrapper'>
+                        <Sidebar />
+                        <div className='container'>
+                            <div className='row'>
+                                <Routes>
+                                    <Route path='/' element={<Home />} />
+                                    <Route
+                                        path='/drivers'
+                                        element={<Drivers />}
+                                    />
+                                    <Route
+                                        path='/orders'
+                                        element={<Orders />}
+                                    />
+                                </Routes>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            )}
+        </>
     );
 };
 
