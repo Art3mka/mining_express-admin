@@ -1,0 +1,40 @@
+html {
+    font-family: sans-serif;
+    font-size: 16px;
+    color: #000;
+}
+
+.table {
+    border: 1px solid lightgray;
+}
+
+.tbody {
+    border-bottom: 1px solid lightgray;
+}
+
+.th {
+    border-bottom: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+}
+
+tfoot .th {
+    font-weight: normal;
+}
+
+.debouncedInput {
+    margin-bottom: 10px;
+    width: 250px!important;
+}
+
+.tr {
+    display: flex;
+    div {
+        width: 190px;
+        text-align: center;
+    }
+}
+
+.customInput{
+    width: 189px!important;
+    border-radius: 0px;
+}
