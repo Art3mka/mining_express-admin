@@ -15,15 +15,23 @@ import {
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { getAuth } from '../../services/api/api'
+import { useContext, useState } from 'react'
+import ContextProvider, { UserContext } from '../../services/context/contextProvider'
 
 const theme = createTheme()
 
 const Login = ({ token }: any) => {
     const [isToken, setToken] = React.useState({accessToken: ''});
 
+    const {user, setUser} = useContext(UserContext)
+
     const getToken = async ({login, password}: any) => {
         const token = await getAuth({login: login, password: password })        
         setToken(token)
+        setUser({token, login})
+        console.log(token);
+        console.log(user);
+        
         return token
     }
 

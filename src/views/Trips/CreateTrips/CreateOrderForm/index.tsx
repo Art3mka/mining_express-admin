@@ -1,18 +1,15 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import './index.scss'
 import Input from '../../../../components/Input'
-import { UserContext } from '../../../../services/context/contextProvider'
-import { createOrder } from '../../../../services/api/api'
 
 interface IFormInput {
-    arrivalTimeId: number
-    tripId: number
-    routeId: number
-    departureBusStopId: string
+    busStopName: string
+    date: string
+    departureTime: string
     phone: string
-    comment: number
-    seatsCount: number
+    routeName: string
+    seatsCount: string
 }
 
 const inputData = [
@@ -40,10 +37,6 @@ const inputData = [
         key: 'seatsCount',
         label: 'Кол-во мест',
     },
-    {
-        key: 'routeId',
-        label: 'RouteId',
-    },
 ]
 
 interface CreateOrderFormProps {
@@ -52,12 +45,9 @@ interface CreateOrderFormProps {
 
 const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
     const { control, handleSubmit } = useForm<IFormInput>()
-    const { user } = useContext(UserContext)
-    const {token} = user
-    
-    const onSubmit = async (data: IFormInput) => {
-        console.log('data data', data);
-        await createOrder(data, token.accessToken)
+
+    const onSubmit = (data: IFormInput) => {
+        alert(JSON.stringify(data))
     }
 
     return (

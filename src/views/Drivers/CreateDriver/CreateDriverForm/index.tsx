@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import './index.scss'
 import Input from '../../../../components/Input'
+import { UserContext } from '../../../../services/context/contextProvider'
+import { createDriver } from '../../../../services/api/api'
 
 interface IFormInput {
-    description: string
-    lastName: string
-    age: string
-    grow: string
-    throw: string
+    userId: number
+    login: string
+    password: string
+    phone: number
 }
 
 
@@ -18,32 +19,27 @@ interface CreateDriverFormProps {
 
 const inputData = [
     {
-        key: 'description',
-        label: 'Описание',
+        key: 'login',
+        label: 'Login',
     },
     {
-        key: 'group',
-        label: 'Группа',
+        key: 'password',
+        label: 'Пароль',
     },
     {
-        key: 'country',
-        label: 'Страна',
-    },
-    {
-        key: 'brand',
-        label: 'Бренд',
-    },
-    {
-        key: 'article',
-        label: 'Артикул',
+        key: 'phone',
+        label: 'Телефон',
     },
 ]
 
 const CreateDriverForm = ({ submitRef }: CreateDriverFormProps) => {
     const { control, handleSubmit } = useForm<IFormInput>()
-
-    const onSubmit = (data: IFormInput) => {
-        alert(JSON.stringify(data))
+    const { user } = useContext(UserContext)
+    const {token} = user
+    console.log('create driver', token.accessToken);
+    
+    const onSubmit = async (data: IFormInput) => {
+        await createDriver(data, token.accessToken)
     }
 
     return (

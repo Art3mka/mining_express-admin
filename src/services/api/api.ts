@@ -46,7 +46,7 @@ export const getDrivers = async (token: string) => {
     return data;
 };
 
-export const createOrder = async (postData: string, token: string) => {
+export const createOrder = async (postData: any, token: string) => {
     const { data } = await makeRequest({
         url: `${url}/api/orders`,
         headers: {
@@ -58,10 +58,10 @@ export const createOrder = async (postData: string, token: string) => {
 
     return data;
 };
-
-export const createDriver = async (postData: string, token: string) => {
+export const createDriver = async (postData: any, token: string) => {
+    const {login, password, phone} = postData
     const { data } = await makeRequest({
-        url: `${url}/users`,
+        url: `${url}/users/drivers?Login=${login}&Password=${password}&Phone=${phone}`,
         headers: {
             'Authorization': `Bearer ${token}`
         },
@@ -113,7 +113,7 @@ export const updateDriver = async (postData: string, token: string) => {
 
 export const unAssignDriver = async (postData: string, token: string) => {
     const { data } = await makeRequest({
-        url: `${url}api/tripps/unAssign`,
+        url: `${url}/api/tripps/unAssign`,
         headers: {
             'Authorization': `Bearer ${token}`
         },
@@ -126,12 +126,30 @@ export const unAssignDriver = async (postData: string, token: string) => {
 
 export const deleteTrip = async (postData: string,tripId: string, token: string) => {
     const { data } = await makeRequest({
-        url: `${url}api/trips/${tripId}`,
+        url: `${url}/api/trips/${tripId}`,
         headers: {
             'Authorization': `Bearer ${token}`
         },
         method: RequestEnum.PATCH,
         data: postData
+    });
+
+    return data;
+};
+
+export const getRoutes = async () => {
+    const { data } = await makeRequest({
+        url: `${url}/api/routes`,
+        method: RequestEnum.GET,
+    });
+
+    return data;
+};
+
+export const getTrips = async (RouteId?: string) => {
+    const { data } = await makeRequest({
+        url: `${url}/api/trips?${RouteId}`,
+        method: RequestEnum.GET,
     });
 
     return data;
