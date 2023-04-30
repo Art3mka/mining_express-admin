@@ -29,6 +29,7 @@ const Login = ({ token }: any) => {
         const token = await getAuth({login: login, password: password })        
         setToken(token)
         setUser({token, login})
+        localStorage.setItem('token', token)
         console.log(token);
         console.log(user);
         

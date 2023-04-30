@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import './App.css';
 import 'rsuite/dist/rsuite.min.css';
 import { Route, Routes } from 'react-router-dom';
@@ -14,6 +14,10 @@ import './index.css'
 const App = () => {
     const { user } = useContext(UserContext);
     console.log('user', user);
+
+    let localToken = null
+    localStorage.getItem(`token`) ? localToken = localStorage.getItem(`token`) : localToken = null
+
     return (
         <>
             <Routes>
@@ -32,3 +36,7 @@ const App = () => {
 };
 
 export default App;
+
+
+
+// user?.token?.accessToken
