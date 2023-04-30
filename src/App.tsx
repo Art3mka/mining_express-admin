@@ -9,6 +9,7 @@ import Login from './components/Login';
 import Trips from './views/Trips';
 import { UserContext } from './services/context/contextProvider';
 import Home from './views/Home';
+import './index.css'
 
 const App = () => {
     const { user } = useContext(UserContext);

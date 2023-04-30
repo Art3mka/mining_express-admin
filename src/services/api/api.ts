@@ -2,7 +2,6 @@ import { makeRequest } from "../makeRequest";
 import { RequestEnum } from "../types";
 
 const url = "http://199.247.18.191:7777";
-
 interface IAuthData {
     login: string,
     password: string,
