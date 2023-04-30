@@ -145,9 +145,9 @@ export const getRoutes = async () => {
     return data;
 };
 
-export const getTrips = async (RouteId?: string) => {
+export const getTrips = async (RouteId?: string, dayOfWeekNumber?: number) => {
     const { data } = await makeRequest({
-        url: `${url}/api/trips?${RouteId}`,
+        url: `${url}/api/trips?RouteId=${RouteId}&DayOfWeekNumber=${dayOfWeekNumber}`,
         method: RequestEnum.GET,
     });
 

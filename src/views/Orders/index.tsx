@@ -21,6 +21,7 @@ const Orders = () => {
     const getOrdersData = async () => {        
         const data = await getOrders(token?.accessToken)
         setOrderData(data)
+        console.log('orders data :>> ', data);
 
         return data.data
     }
