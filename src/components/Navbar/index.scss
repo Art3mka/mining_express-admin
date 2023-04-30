@@ -1,0 +1,30 @@
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 3rem;
+}
+
+.navbar-header {
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    transition: all .2s linear;
+    border-radius: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+
+
+
+    & h3 {
+        color: #fff;
+        text-transform: uppercase;
+        font-size: 1.5rem;
+        line-height: 1;
+        font-weight: 400;
+        font-style: italic;
+    }
+
+    &:hover {
+        background-color: #1d6db3;
+    }
+    
+}

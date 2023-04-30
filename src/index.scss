@@ -1,3 +1,9 @@
+.body {
+    font-family: 'Poppins', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 .wrapper{
     display: flex;
 }
@@ -25,13 +31,16 @@
     z-index: 50;
     -webkit-box-shadow: 5px 0px 10px rgba(0,0,0,0.5);
     box-shadow: 5px 0px 10px rgba(0,0,0,0.5);
-    background: #1e88e5;
+    background: #02060a;
     height: 70px;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .topbar .top-navbar .navbar-header {
     line-height: 70px;
-    text-align: center;
+    text-align: left;
+    color: #fff;
 }
 
 .navbar-collapse {

@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { UserContext } from "../../services/context/contextProvider";
+import './index.scss'
 
 const Navbar = () => {
     const { user } = useContext(UserContext)
