@@ -8,7 +8,7 @@ interface IAuthData {
 }
 
 export const getAuth = async (authData: IAuthData) => {
-    console.log(authData);
+    // console.log(authData);
     
     const { data } = await makeRequest({
         url: `${url}/api/auth/admin`,
