@@ -30,6 +30,7 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
     const [modifiedTripsData, setModifiedTripsData] = useState([]);
     const [stationInfo, setStationInfo] = useState([]);
     const [routeIdValue, setRouteIdValue] = useState('');
+    const [stationId, setStationId] = useState('');
     const [isRouteChoose, setRouteChoose] = useState(false);
     const [isTripChoose, setTripChoose] = useState(false);
     const [isArrivalTimeChoose, setArrivalTimeChoose] = useState(false);
@@ -75,7 +76,6 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
 
     const getTripsData = async (id: string, date: number) => {
         const result = await getTrips(id, date);
-        console.log('trips', result);
 
         setTripsData(result.trips);
         setDepatureData(result.departureBusStops);
@@ -104,16 +104,10 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
 
     useEffect(() => {
         if (routeIdValue && boardingDate) {
-            getModifyStationData(depatureData);
-        }
-    }, [boardingDate, depatureData, routeIdValue]);
-
-    useEffect(() => {
-        if (boardingDate) {
             const data = getModifyStationData(depatureData);
             setModifiedStatinData(data);
         }
-    }, [boardingDate]);
+    }, [boardingDate, depatureData, routeIdValue]);
 
     useEffect(() => {
         if (boardingDate) {
@@ -127,7 +121,6 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
             const getDifferentTime = modifiedTripsData.map(
                 (item: any) => item.attr
             );
-            console.log('getDifferentTime :>> ', getDifferentTime);
             setDifferentTimeAvailable(getDifferentTime as any);
         }
     }, [modifiedTripsData]);
@@ -164,7 +157,6 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
             value: item.id,
             stopTimes: item.stopTimes,
         }));
-        // console.log('getModifyStationData data :>> ', data);
 
         return result;
     };
@@ -173,7 +165,6 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
         const result = modifiedStatinData.filter(
             (item: any) => item.value === id
         );
-        console.log('result :>> ', result);
 
         const stationDataModify = result
             .map((item: any) => item.stopTimes)
@@ -183,51 +174,40 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
                 value: item.id,
             }));
 
-        setStationInfo(stationDataModify as any);
+        const sortedDifferentTime = differentTimeAvailable.map((item: any) => ({
+            departureTime: parseFloat(item.departureTime.replace(/:/, '.')).toFixed(2),
+            arrivalTime: parseFloat(item.arrivalTime.replace(/:/, '.')).toFixed(2),
+        }));
 
-        // const sortedDifferentTime = differentTimeAvailable.map((item: any) => ({
-        //     departureTime: parseFloat(item.departureTime.replace(/:/, '.')),
-        //     arrivalTime: parseFloat(item.arrivalTime.replace(/:/, '.')),
-        // }));
+        const sortedStationData = stationDataModify.map((item: any) => ({
+            label: parseFloat(item.label.replace(/:/, '.')).toFixed(2),
+            value: item.value,
+        }));
 
-        // console.log('sortedDifferentTime :>> ', sortedDifferentTime);
+        const avalableStation = sortedStationData.filter((el) =>
+            sortedDifferentTime.find(
+                (item) =>
+                    item.departureTime <= el.label &&
+                    item.arrivalTime >= el.label
+            )
+        );
 
-        // const sortedStationData = stationDataModify.map((item: any) => ({
-        //     label: parseFloat(item.label.replace(/:/, '.')),
-        //     value: item.value,
-        // }));
+        const data = avalableStation.map((elem) => ({
+            value: elem.value,
+            label: `Время: ${
+                String(elem.label).replace(/[.]/g, ':')
+            }`,
+        }));
 
-        // console.log(
-        //     'stationDataModify id :>> ',
-        //     sortedStationData.map((item: any) => {
-        //         console.log('sortedStationData item', item);
-        //         sortedDifferentTime.filter(
-        //             (elem: any) =>
-        //                 item.label >= elem.departureTime &&
-        //                 item.label <= elem.arrivalTime
-        //                     ? return {
-        //                           value: item.value,
-        //                           label: item.label,
-        //                       }
-        //                     : null
-        //         );
-        //     })
-        // );
-
-        // var array = [1, 2, 3, 4];
-        // var evens = _.remove(array, function(n) {
-        //   return n % 2 == 0;
-        // });
-         
-        // console.log(array);
-        // // => [1, 3]
-         
-        // console.log(evens);
-        // // => [2, 4]
-
-
-        return result;
+        return data;
     };
+
+    useEffect(() => {
+        if (stationId) {
+            const data = getStationInfo(stationId);
+            setStationInfo(data as any);
+        }
+    }, [stationId]);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="form">
@@ -243,8 +223,6 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
                             />
                         )}
                         key="seatsCount"
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore
                         name="seatsCount"
                         control={control}
                     />
@@ -257,8 +235,6 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
                             />
                         )}
                         key="comment"
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore
                         name="comment"
                         control={control}
                     />
@@ -271,8 +247,6 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
                             />
                         )}
                         key="phone"
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore
                         name="phone"
                         control={control}
                     />
@@ -291,8 +265,6 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
                             />
                         )}
                         key="routeId"
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore
                         name="routeId"
                         control={control}
                     />
@@ -320,8 +292,6 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
                             />
                         )}
                         key="tripId"
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore
                         name="tripId"
                         control={control}
                     />
@@ -333,7 +303,8 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
                                 placeholder="Остановка"
                                 className="select"
                                 onChange={(e: any) => {
-                                    getStationInfo(e);
+                                    setData(e);
+                                    setStationId(e);
                                     setArrivalTimeChoose(!!e);
                                     field.onChange(e);
                                 }}
@@ -341,8 +312,6 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
                             />
                         )}
                         key="departureBusStopId"
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore
                         name="departureBusStopId"
                         control={control}
                     />
@@ -361,8 +330,6 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
                             />
                         )}
                         key="arrivalTimeId"
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore
                         name="arrivalTimeId"
                         control={control}
                     />
