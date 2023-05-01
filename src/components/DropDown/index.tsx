@@ -1,5 +1,4 @@
 import { SelectPicker } from 'rsuite';
-import { ItemDataType } from 'rsuite/esm/@types/common';
 
 interface DropDownProps {
     data: any;
@@ -21,7 +20,6 @@ const DropDown = (props: any) => {
                 className={className}
                 onChange={onChange}
                 disabled={disabled}
-                // onSelect={onChange}
             />
         </>
     );

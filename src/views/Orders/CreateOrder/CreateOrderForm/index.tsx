@@ -45,22 +45,17 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
 
     const onSubmit = async (data: IFormInput) => {
         console.log('data data', data);
-        await createOrder(data, token.accessToken);
+        try {
+            await createOrder(data, token.accessToken);
+        } catch (error) {
+            console.error('Error')
+        }
     };
 
     const seatsData = ['1', '2', '3'].map((item) => ({
         label: item,
         value: item,
     }));
-
-    useEffect(() => {
-        getRoutesData();
-    }, []);
-
-    interface RoutesData {
-        routeId: string;
-        routeName: string;
-    }
 
     const getRoutesData = async () => {
         const result = await getRoutes();
@@ -74,15 +69,20 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
         return data;
     };
 
+    useEffect(() => {
+        getRoutesData();
+    }, []);
+
+    interface RoutesData {
+        routeId: string;
+        routeName: string;
+    }
+
     const getTripsData = async (id: string, date: number) => {
         const result = await getTrips(id, date);
 
         setTripsData(result.trips);
         setDepatureData(result.departureBusStops);
-    };
-
-    const setData = (value: any) => {
-        console.log('test', value);
     };
 
     const getOrderDate = (value?: Date) => {
@@ -175,8 +175,12 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
             }));
 
         const sortedDifferentTime = differentTimeAvailable.map((item: any) => ({
-            departureTime: parseFloat(item.departureTime.replace(/:/, '.')).toFixed(2),
-            arrivalTime: parseFloat(item.arrivalTime.replace(/:/, '.')).toFixed(2),
+            departureTime: parseFloat(
+                item.departureTime.replace(/:/, '.')
+            ).toFixed(2),
+            arrivalTime: parseFloat(item.arrivalTime.replace(/:/, '.')).toFixed(
+                2
+            ),
         }));
 
         const sortedStationData = stationDataModify.map((item: any) => ({
@@ -194,9 +198,7 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
 
         const data = avalableStation.map((elem) => ({
             value: elem.value,
-            label: `Время: ${
-                String(elem.label).replace(/[.]/g, ':')
-            }`,
+            label: `Время: ${String(elem.label).replace(/[.]/g, ':')}`,
         }));
 
         return data;
@@ -278,7 +280,7 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
                         disabled={!isRouteChoose}
                     />
                     <Controller
-                        render={({ field, fieldState }) => (
+                        render={({ field }) => (
                             <DropDown
                                 {...field}
                                 data={getModifyTripsData(tripsData)}
@@ -303,7 +305,6 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
                                 placeholder="Остановка"
                                 className="select"
                                 onChange={(e: any) => {
-                                    setData(e);
                                     setStationId(e);
                                     setArrivalTimeChoose(!!e);
                                     field.onChange(e);
@@ -323,7 +324,6 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
                                 placeholder="Время посадки"
                                 className="select"
                                 onChange={(e: any) => {
-                                    setData(e);
                                     field.onChange(e);
                                 }}
                                 disabled={!isArrivalTimeChoose}
