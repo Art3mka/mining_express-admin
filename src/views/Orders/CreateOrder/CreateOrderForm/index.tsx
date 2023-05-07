@@ -7,6 +7,7 @@ import { UserContext } from '../../../../services/context/contextProvider';
 import { createOrder, getRoutes, getTrips } from '../../../../services/api/api';
 import DropDown from '../../../../components/DropDown';
 import DatePicker from '../../../../components/DatePicker';
+import { Orders } from '../../../../components/Table/types';
 
 interface IFormInput {
     arrivalTimeId: number;
@@ -20,6 +21,11 @@ interface IFormInput {
 
 interface CreateOrderFormProps {
     submitRef: any;
+}
+
+interface RoutesData {
+    routeId: string;
+    routeName: string;
 }
 
 const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
@@ -44,11 +50,10 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
     const { token } = user;
 
     const onSubmit = async (data: IFormInput) => {
-        console.log('data data', data);
         try {
             await createOrder(data, token.accessToken);
         } catch (error) {
-            console.error('Error')
+            console.error('Error');
         }
     };
 
@@ -73,20 +78,16 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
         getRoutesData();
     }, []);
 
-    interface RoutesData {
-        routeId: string;
-        routeName: string;
-    }
-
     const getTripsData = async (id: string, date: number) => {
         const result = await getTrips(id, date);
-
+        console.log('trips data result :>> ', result);
         setTripsData(result.trips);
         setDepatureData(result.departureBusStops);
     };
 
     const getOrderDate = (value?: Date) => {
         const orderDate = value?.getDay();
+        console.log('value Date:>> ', orderDate);
         setBoardingDate(orderDate);
     };
 

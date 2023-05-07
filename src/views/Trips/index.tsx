@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import TripsTable from "../../components/TripsTable";
-import { getTrips } from "../../services/api/api";
+// import { getTrips } from "../../services/api/api";
 
 interface TripsProps {}
 

@@ -70,7 +70,7 @@ export const createDriver = async (postData: any, token: string) => {
     return data;
 };
 
-export const updateOrder = async (postData: string, token: string) => {
+export const updateOrder = async (postData: any, token: string) => {
     const { data } = await makeRequest({
         url: `${url}/api/orders`,
         headers: {

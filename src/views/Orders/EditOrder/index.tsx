@@ -1,20 +1,21 @@
 import React, { useRef } from 'react'
 import ModalComponent from '../../../components/Modal'
-import CreateOrderForm from './CreateOrderForm'
+import EditOrderForm from './EditOrderForm'
 
 
 interface CreateOrderProps {
     open: boolean
     close: () => void
+    editData?: any
 }
 
-const CreateOrder = ({ open, close }: CreateOrderProps) => {
+const EditOrder = ({ open, close, editData }: CreateOrderProps) => {
     const submitRef = useRef()
     return (
         <ModalComponent submitRef={submitRef} open={open} close={close}>
-           <CreateOrderForm submitRef={submitRef}/>
+           <EditOrderForm submitRef={submitRef} editData={editData}/>
         </ModalComponent>
     )
 }
 
-export default CreateOrder
+export default EditOrder

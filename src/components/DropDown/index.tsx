@@ -4,11 +4,13 @@ interface DropDownProps {
     data: any;
     placeholder: string;
     props: any;
+    defaultValue: any;
 }
 
 const DropDown = (props: any) => {
-    const { data, placeholder, className, onChange, disabled } =
+    const { data, placeholder, className, onChange, disabled, defaultValue } =
         props;
+    // console.log(placeholder, defaultValue);
     return (
         <>
             <SelectPicker
