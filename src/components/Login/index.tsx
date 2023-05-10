@@ -29,8 +29,8 @@ const Login = ({ token }: any) => {
         const token = await getAuth({login: login, password: password })        
         setToken(token)
         setUser({token, login})
-        localStorage.setItem('token', token)
-        console.log(token);
+        localStorage.setItem('token', token.accessToken)
+        localStorage.setItem('login', login)
         console.log(user);
         
         return token

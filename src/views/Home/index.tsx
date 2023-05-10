@@ -8,6 +8,7 @@ import Trips from '../Trips';
 import RoutesPage from '../Routes';
 
 const Home = () => {
+
     return (
         <div className="App">
             <Navbar />
