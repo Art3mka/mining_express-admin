@@ -5,25 +5,14 @@ import './index.scss';
 import { IconButton } from '@mui/material';
 
 const Navbar = () => {
-    const { user } = useContext(UserContext);
-    const { login } = user;
+    const { user } = useContext(UserContext)
+    const userLogin = user?.login
 
     return (
         <header className="topbar" data-navbarbg="skin6">
             <nav className="navbar top-navbar navbar-expand-md navbar-light">
-                <div className="nav-wrapper">
-                    <div className="navbar-header" data-logobg="skin6">
-                        <h3>{`${login ?? ''}`}</h3>
-                    </div>
-                    <div>
-                        <IconButton
-                            size="large"
-                            aria-label="search"
-                            color="inherit"
-                        >
-                            <LogoutOutlinedIcon className='iconColor'/>
-                        </IconButton>
-                    </div>
+                <div className="navbar-header" data-logobg="skin6">
+                    <h3>{`${userLogin ?? localStorage.getItem('login')}`}</h3>
                 </div>
             </nav>
         </header>

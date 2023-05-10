@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './App.css';
 import 'rsuite/dist/rsuite.min.css';
 import { Route, Routes } from 'react-router-dom';
@@ -10,20 +10,75 @@ import Trips from './views/Trips';
 import { UserContext } from './services/context/contextProvider';
 import Home from './views/Home';
 import './index.css'
+import jwtDecode, { JwtPayload } from 'jwt-decode';
 
 const App = () => {
+
+    const [isValid, setIsValid] = useState(false)
+
+    const userToken = JSON.parse(JSON.stringify(localStorage.getItem(`token`)) || '{}');
+
+    useEffect(() => {
+        const decodedToken = getDecodedToken(userToken)
+        console.log(decodedToken)
+        if (decodedToken != undefined) {
+            const isValid = getIsValid(decodedToken.exp)
+            setIsValid(isValid)
+        }
+    }, [userToken])
+
+    // const decodedToken: JwtPayload = jwtDecode(userToken);
+
+    // try {     
+    //     const decodedToken: JwtPayload = jwtDecode(userToken);
+
+        
+
+    //     const isValid = getIsValid(decodedToken.exp)
+    //     console.log(isValid)
+    // } catch (error) {
+    //     console.log(error)
+    // }
+
+    // useEffect(() => {
+    //     const isValid = getIsValid(decodedToken.exp)
+    //     setIsValid(isValid)
+    // }, [userToken])
+    
+
     const { user } = useContext(UserContext);
     console.log('user', user);
+    console.log(localStorage)
 
-    let localToken = null
-    localStorage.getItem(`token`) ? localToken = localStorage.getItem(`token`) : localToken = null
+    const getIsValid = (expDateUnix: any) => {
+        const curUnix = +new Date()/1000
+        if (expDateUnix>curUnix) {
+            console.log(true)
+            return true
+        } else {
+            console.log(false)
+            return false
+        }
+    }
+
+    const getDecodedToken = (token: any) => {
+        try {     
+            const decodedToken: JwtPayload = jwtDecode(token);
+            return decodedToken
+    
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    
 
     return (
         <>
             <Routes>
                 <Route
                     path="/"
-                    element={user?.token?.accessToken ? <Home /> : <Login />}
+                    element={isValid ? <Home /> : <Login />}
                 >
                     <Route path="/drivers" element={<Drivers />} />
                     <Route path="/orders" element={<Orders />} />
