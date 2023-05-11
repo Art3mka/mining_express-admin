@@ -1,13 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { useContext, useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import './index.scss';
 import Input from '../../../../components/Input';
 import { UserContext } from '../../../../services/context/contextProvider';
-import { createOrder, getRoutes, getTrips } from '../../../../services/api/api';
+import { createOrder, getTrips } from '../../../../services/api/api';
 import DropDown from '../../../../components/DropDown';
 import DatePicker from '../../../../components/DatePicker';
-import { Orders } from '../../../../components/Table/types';
 
 interface IFormInput {
     arrivalTimeId: number;
@@ -21,15 +19,13 @@ interface IFormInput {
 
 interface CreateOrderFormProps {
     submitRef: any;
+    close: () => void;
 }
 
-interface RoutesData {
-    routeId: string;
-    routeName: string;
-}
+const CreateOrderForm = ({ submitRef, close }: CreateOrderFormProps) => {
+    const { user, routesData } = useContext(UserContext);
+    const { token } = user;
 
-const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
-    const [routesData, setRotesData] = useState([]);
     const [tripsData, setTripsData] = useState([]);
     const [depatureData, setDepatureData] = useState([]);
     const [modifiedStatinData, setModifiedStatinData] = useState([]);
@@ -46,12 +42,11 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
     const [differentTimeAvailable, setDifferentTimeAvailable] = useState([]);
 
     const { control, handleSubmit } = useForm<IFormInput>();
-    const { user } = useContext(UserContext);
-    const { token } = user;
 
     const onSubmit = async (data: IFormInput) => {
         try {
             await createOrder(data, token.accessToken);
+            close()
         } catch (error) {
             console.error('Error');
         }
@@ -61,22 +56,6 @@ const CreateOrderForm = ({ submitRef }: CreateOrderFormProps) => {
         label: item,
         value: item,
     }));
-
-    const getRoutesData = async () => {
-        const result = await getRoutes();
-        const data = result.map(({ routeId, routeName }: RoutesData) => ({
-            label: routeName,
-            value: routeId,
-        }));
-        console.log(data);
-
-        setRotesData(data);
-        return data;
-    };
-
-    useEffect(() => {
-        getRoutesData();
-    }, []);
 
     const getTripsData = async (id: string, date: number) => {
         const result = await getTrips(id, date);

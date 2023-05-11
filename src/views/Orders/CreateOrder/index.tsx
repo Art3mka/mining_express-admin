@@ -12,7 +12,7 @@ const CreateOrder = ({ open, close }: CreateOrderProps) => {
     const submitRef = useRef()
     return (
         <ModalComponent submitRef={submitRef} open={open} close={close}>
-           <CreateOrderForm submitRef={submitRef}/>
+           <CreateOrderForm submitRef={submitRef} close={close}/>
         </ModalComponent>
     )
 }

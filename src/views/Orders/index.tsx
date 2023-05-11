@@ -6,11 +6,11 @@ import { getAuth, getOrders } from "../../services/api/api";
 import "./index.scss";
 
 const Orders = () => {
-    const [openGroup, setOpenGroup] = useState(false);
+    const [openGroup, setOpenEditOrder] = useState(false);
     const [token, setToken] = useState({accessToken: ''});
     const [orderData, setOrderData] = useState();
-    const handleOpenOrder = () => setOpenGroup(true);
-    const handleCloseOrder = () => setOpenGroup(false);
+    const handleOpenOrder = () => setOpenEditOrder(true);
+    const handleCloseOrder = () => setOpenEditOrder(false);
 
     const getToken = async () => {
         const token = await getAuth({login: 'me-admin', password: 'express-admin' })        

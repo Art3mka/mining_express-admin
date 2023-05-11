@@ -1,109 +1,124 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
-import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import './index.scss';
 import Input from '../../../../components/Input';
 import { UserContext } from '../../../../services/context/contextProvider';
-import {
-    createOrder,
-    getRoutes,
-    getTrips,
-    updateOrder,
-} from '../../../../services/api/api';
+import { getTrips, updateOrder } from '../../../../services/api/api';
 import DropDown from '../../../../components/DropDown';
 import DatePicker from '../../../../components/DatePicker';
 import { Orders } from '../../../../components/Table/types';
-import { seatsData } from './utils';
-import { Loader, Placeholder } from 'rsuite';
+import { getDefaultRoutesID, getModifyStationData, seatsData } from './utils';
 import ModalLoader from '../../../../components/ModalLoader';
 
 interface IFormInput {
-    arrivalTimeId: number;
+    orderId: number;
     tripId: number;
     routeId: number;
-    departureBusStopId: string;
-    phone: string;
-    orderId: number;
+    arrivalTimeId: number;
+    departureBusStopId: number;
     seatsCount: number;
+    phone: string;
 }
 
 interface CreateOrderFormProps {
     submitRef: any;
     editData?: Orders;
+    close: () => void;
 }
 
-interface RoutesData {
-    routeId: string;
-    routeName: string;
-}
-
-const EditOrderForm = ({ submitRef, editData }: CreateOrderFormProps) => {
-    const [routesData, setRotesData] = useState([{ label: '', value: '' }]);
+const EditOrderForm = ({
+    submitRef,
+    editData,
+    close,
+}: CreateOrderFormProps) => {
+    const { user, routesData } = useContext(UserContext);
+    const { token } = user;
     const [tripsData, setTripsData] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    // const [editOrderData, setEditOrderData] = useState<Orders>();
     const [depatureData, setDepatureData] = useState([]);
-    const [modifiedStatinData, setModifiedStatinData] = useState([]);
+
+    const [isLoading, setIsLoading] = useState(false);
     const [modifiedTripsData, setModifiedTripsData] = useState([]);
-    const [stationInfo, setStationInfo] = useState([]);
+    const [stationInfo, setStationInfo] = useState([{value: ''}]);
     const [routeIdValue, setRouteIdValue] = useState('');
     const [stationId, setStationId] = useState('');
-    const [isRouteChoose, setRouteChoose] = useState(false);
-    const [isTripChoose, setTripChoose] = useState(false);
-    const [isArrivalTimeChoose, setArrivalTimeChoose] = useState(false);
-    const [isBoardingDate, setIsBoardingDate] = useState(false);
-    const [isDisabled, setIsDisabled] = useState(false);
+    const [defaultBusStopId, setDefaultBusStopId] = useState(0);
     const [boardingDate, setBoardingDate] = useState<number | undefined>();
-    const [differentTimeAvailable, setDifferentTimeAvailable] = useState([]);
 
     const [defaultRoutesValue, setDefaultRoutesValue] = useState<number>();
 
-    const { control, handleSubmit } = useForm<IFormInput>();
-    const { user } = useContext(UserContext);
-    const { token } = user;
+    const { control, handleSubmit } = useForm<IFormInput>({
+        defaultValues: {
+            orderId: editData?.orderId,
+            phone: editData?.phone,
+            seatsCount: +editData?.seatsCount!,
+        },
+    });
+
+    const editValue = true;
+
+    // debugger
 
     const onSubmit = async (data: IFormInput) => {
         try {
-            await updateOrder(data, token.accessToken);
+            console.log('submit data :>> ', {
+                ...data,
+                departureBusStopId: defaultBusStopId,
+                routeId: defaultRoutesValue,
+                orderId: editData?.orderId,
+                //@ts-ignore
+                tripId: modifiedTripsData[0].value,
+                //@ts-ignore
+                arrivalTimeId: stationInfo[0].value,
+            });
+            const modifyData = {
+                ...data,
+                departureBusStopId: defaultBusStopId,
+                routeId: defaultRoutesValue,
+                orderId: editData?.orderId,
+                //@ts-ignore
+                tripId: modifiedTripsData[0].value,
+                //@ts-ignore
+                arrivalTimeId: stationInfo[0].value,
+            };
+
+            await updateOrder(modifyData, token.accessToken);
+            close();
         } catch (error) {
             console.error('Error');
         }
     };
 
-    const getRoutesData = async () => {
-        try {
-            setIsLoading(true);
-            const result = await getRoutes();
-            const data = result.map(({ routeId, routeName }: RoutesData) => ({
-                label: routeName,
-                value: routeId,
-            }));
-
-            console.log('1 render routes data :>> ', data);
-
-            setRotesData(data);
-            setIsLoading(false);
-            return data;
-        } catch (error) {
-            console.error('error');
-        }
-    };
-
-    useEffect(() => {
-        getRoutesData();
-    }, []);
-
     const getDefaultRoutesData = (value: any) => {
-        const result = routesData.find((el) => el.label === value)?.value;
+        // @ts-ignore
+        const result = routesData?.find((el) => el.label === value)?.value;
         setDefaultRoutesValue(Number(result));
+        // console.log('result :>> ', result);
         return Number(result);
     };
 
+    debugger
+    //информация о рейсах
     const getTripsData = async (id: string, date: any) => {
-        const result = await getTrips(id, date);
-        console.log('result getTripsData:>> ', result);
-        setTripsData(result.trips);
-        setDepatureData(result.departureBusStops);
+        try {
+            setIsLoading(true);
+            const result = await getTrips(id, date);
+            setTripsData(result.trips);
+            setModifiedTripsData(result.trips);
+            const res = getModifyTripsData(result.trips);
+            console.log('res 107:>> ', res);
+            setDepatureData(result.departureBusStops);
+            const data = getDefaultRoutesID(
+                result.departureBusStops,
+                editData?.busStopName!
+            );
+            //@ts-ignore
+            setDefaultBusStopId(data?.id);
+            //@ts-ignore
+            getStationInfo(data?.id!, result.trips, result.departureBusStops);
+            setIsLoading(false);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const getOrderDate = (value?: Date) => {
@@ -116,100 +131,63 @@ const EditOrderForm = ({ submitRef, editData }: CreateOrderFormProps) => {
             const dayOfWeek = new Date(editData?.date!).getDay();
             getTripsData(String(defaultRoutesValue), dayOfWeek);
         }
-    }, [defaultRoutesValue]);
-
+    }, [defaultRoutesValue, editData?.date]);
+    // debugger
     useEffect(() => {
         if (routeIdValue) {
+            //важная штука
             const dayOfWeek = new Date(editData?.date!).getDay();
             getTripsData(routeIdValue, dayOfWeek!);
         }
-
+        //здесь загружается информация о рейсах
         if (routeIdValue && boardingDate) {
             getTripsData(routeIdValue, boardingDate!);
         }
-    }, [routeIdValue]);
-
-    useEffect(() => {
-        getModifyTripsData(tripsData);
-    }, [tripsData]);
-
-    useEffect(() => {
-        console.log('boardingDate :>> ', boardingDate);
-        // if (routeIdValue && boardingDate) {
-            const data = getModifyStationData(depatureData);
-            console.log('data :>> ', data);
-            setModifiedStatinData(data);
-        // }
-    }, [boardingDate, depatureData, routeIdValue]);
+    }, [boardingDate, editData?.date, routeIdValue]);
 
     useEffect(() => {
         if (tripsData) {
+            console.log('tripsData :>> ', tripsData);
             const data = getModifyTripsData(tripsData);
             setModifiedTripsData(data);
         }
-    }, [boardingDate, tripsData]);
+    }, [tripsData]);
 
-    useEffect(() => {
-        if (modifiedTripsData) {
-            const getDifferentTime = modifiedTripsData.map(
-                (item: any) => item.attr
-            );
-            setDifferentTimeAvailable(getDifferentTime as any);
+    const getModifyTripsData = (data: any, editValue?: any) => {
+        if (editValue) {
+            const result = data
+                .map((item: any) => ({
+                    label: `Рейс: ${item.tripDate} - ${item.departureTime} - ${item.arrivalTime}`,
+                    value: item.tripId,
+                    departureTime: item.departureTime,
+                    arrivalTime: item.arrivalTime,
+                }))
+                .filter((el: any) =>
+                    el.label.includes(editData?.date)
+                )[0]?.value;
+            return result;
         }
-    }, [modifiedTripsData]);
-
-    const setDisabledDropdown = (isTrip: boolean, isDay: boolean) => {
-        if (isTrip) {
-            if (isDay) {
-                return setIsDisabled(false);
-            }
-            return setIsDisabled(true);
-        }
-        return setIsDisabled(true);
-    };
-    useEffect(() => {
-        setDisabledDropdown(isBoardingDate, isRouteChoose);
-    }, [isBoardingDate, isRouteChoose]);
-
-    const getModifyTripsData = (data: any) => {
         const result = data.map((item: any) => ({
             label: `Рейс: ${item.tripDate} - ${item.departureTime} - ${item.arrivalTime}`,
             value: item.tripId,
-            attr: {
-                departureTime: item.departureTime,
-                arrivalTime: item.arrivalTime,
-            },
+            departureTime: item.departureTime,
+            arrivalTime: item.arrivalTime,
         }));
-        console.log('getModifyTripsData :>> ', result);
         return result;
     };
 
-    const getModifyStationData = (data: any) => {
-        const result = data.map((item: any) => ({
-            label: item.name,
-            value: item.id,
-            stopTimes: item.stopTimes,
-        }));
-
-        return result;
-    };
-
-    const getStationInfo = (id: any) => {
-        const result = modifiedStatinData.filter(
-            (item: any) => item.value === id
-        );
+    const getStationInfo = (id: any, tripsArray?: [], busStopData?: []) => {
+        const result = busStopData?.filter((item: any) => item.id === id);
 
         const stationDataModify = result
-            .map((item: any) => item.stopTimes)
+            ?.map((item: any) => item.stopTimes)
             .flat()
             .map((item: any) => ({
                 label: item.time,
                 value: item.id,
             }));
 
-        console.log('stationDataModify :>> ', stationDataModify);
-
-        const sortedDifferentTime = differentTimeAvailable.map((item: any) => ({
+        const sortedDifferentTime = tripsArray?.map((item: any) => ({
             departureTime: parseFloat(
                 item.departureTime.replace(/:/, '.')
             ).toFixed(2),
@@ -217,35 +195,38 @@ const EditOrderForm = ({ submitRef, editData }: CreateOrderFormProps) => {
                 2
             ),
         }));
+        debugger
 
-        const sortedStationData = stationDataModify.map((item: any) => ({
+        const sortedStationData = stationDataModify?.map((item: any) => ({
             label: parseFloat(item.label.replace(/:/, '.')).toFixed(2),
             value: item.value,
         }));
 
-        const avalableStation = sortedStationData.filter((el) =>
-            sortedDifferentTime.find(
+        const avalableStation = sortedStationData?.filter((el) =>
+            sortedDifferentTime?.find(
                 (item) =>
                     item.departureTime <= el.label &&
                     item.arrivalTime >= el.label
             )
         );
 
-        const data = avalableStation.map((elem) => ({
+        const data = avalableStation?.map((elem) => ({
             value: elem.value,
             label: `Время: ${String(elem.label).replace(/[.]/g, ':')}`,
         }));
+
+        setStationInfo(data as any);
 
         return data;
     };
 
     useEffect(() => {
         if (stationId) {
-            const data = getStationInfo(stationId);
-            setStationInfo(data as any);
+            //@ts-ignore
+            getStationInfo(stationId, modifiedTripsData, depatureData as any);
         }
     }, [stationId]);
-
+    // debugger
     return (
         <>
             {isLoading ? (
@@ -258,8 +239,9 @@ const EditOrderForm = ({ submitRef, editData }: CreateOrderFormProps) => {
                                 render={({ field }) => (
                                     <Input
                                         {...field}
-                                        label="ID"
+                                        label="ID заказа"
                                         className="form-input"
+                                        // defaultValue={editData?.orderId}
                                         value={editData?.orderId}
                                         disabled
                                     />
@@ -269,7 +251,7 @@ const EditOrderForm = ({ submitRef, editData }: CreateOrderFormProps) => {
                                 control={control}
                             />
                             <Controller
-                                render={({ field }) => (
+                                render={() => (
                                     <DropDown
                                         data={seatsData}
                                         placeholder="Кол-во мест"
@@ -303,7 +285,6 @@ const EditOrderForm = ({ submitRef, editData }: CreateOrderFormProps) => {
                                         className="select"
                                         onChange={(e: any) => {
                                             setRouteIdValue(e);
-                                            setRouteChoose(!!e);
                                             field.onChange(e);
                                         }}
                                         defaultValue={getDefaultRoutesData(
@@ -320,7 +301,6 @@ const EditOrderForm = ({ submitRef, editData }: CreateOrderFormProps) => {
                                 placeholder="Выберите день"
                                 onChange={(e: any) => {
                                     getOrderDate(e);
-                                    setIsBoardingDate(!!e);
                                 }}
                                 defaultValue={new Date(editData?.date!)}
                             />
@@ -332,12 +312,11 @@ const EditOrderForm = ({ submitRef, editData }: CreateOrderFormProps) => {
                                         placeholder="Рейс"
                                         className="select"
                                         onChange={(e: any) => {
-                                            setTripChoose(!!e);
                                             field.onChange(e);
                                         }}
-                                        // disabled={isDisabled}
                                         defaultValue={getModifyTripsData(
-                                            tripsData
+                                            tripsData,
+                                            editValue
                                         )}
                                     />
                                 )}
@@ -345,6 +324,7 @@ const EditOrderForm = ({ submitRef, editData }: CreateOrderFormProps) => {
                                 name="tripId"
                                 control={control}
                             />
+
                             <Controller
                                 render={({ field }) => (
                                     <DropDown
@@ -356,11 +336,9 @@ const EditOrderForm = ({ submitRef, editData }: CreateOrderFormProps) => {
                                         className="select"
                                         onChange={(e: any) => {
                                             setStationId(e);
-                                            setArrivalTimeChoose(!!e);
                                             field.onChange(e);
                                         }}
-                                        // disabled={!isTripChoose}
-                                        defaultValue={editData?.busStopName}
+                                        defaultValue={defaultBusStopId}
                                     />
                                 )}
                                 key="departureBusStopId"
@@ -377,14 +355,14 @@ const EditOrderForm = ({ submitRef, editData }: CreateOrderFormProps) => {
                                         onChange={(e: any) => {
                                             field.onChange(e);
                                         }}
-                                        disabled={!isArrivalTimeChoose}
-                                        defaultValue={editData?.departureTime}
+                                        //@ts-ignore
+                                        // defaultValue={stationInfo[0].value ?? ''}
+                                        defaultValue={stationInfo[0].value}
                                     />
                                 )}
                                 key="arrivalTimeId"
                                 name="arrivalTimeId"
                                 control={control}
-                                defaultValue={+editData?.departureTime!}
                             />
                         </div>
                     </div>
