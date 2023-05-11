@@ -1,43 +1,38 @@
-import { Button } from "@mui/material";
-import CreateOrder from "./CreateOrder";
-import { useEffect, useState } from "react";
-import Table from "../../components/Table";
-import { getAuth, getOrders } from "../../services/api/api";
-import "./index.scss";
+import { Button } from '@mui/material';
+import CreateOrder from './CreateOrder';
+import { useContext, useEffect, useState } from 'react';
+import Table from '../../components/Table';
+import { getOrders } from '../../services/api/api';
+import './index.scss';
+import { UserContext } from '../../services/context/contextProvider';
 
 const Orders = () => {
     const [openGroup, setOpenEditOrder] = useState(false);
-    const [token, setToken] = useState({accessToken: ''});
     const [orderData, setOrderData] = useState();
     const handleOpenOrder = () => setOpenEditOrder(true);
     const handleCloseOrder = () => setOpenEditOrder(false);
+    const { user } = useContext(UserContext);
+    const { token } = user;
 
-    const getToken = async () => {
-        const token = await getAuth({login: 'me-admin', password: 'express-admin' })        
-        setToken(token)
-
-        return token
-    }
-    const getOrdersData = async () => {        
-        const data = await getOrders(token?.accessToken)
-        setOrderData(data)
-
-        return data.data
-    }
+    const getOrdersData = async () => {
+        const data = await getOrders(token?.accessToken);
+        setOrderData(data);
+    };
 
     useEffect(() => {
-        getToken()
-    }, [])
-    useEffect(() => {
-        getOrdersData()
-    }, [token])
+        getOrdersData();
+    }, [openGroup]);
 
     return (
         <div className="card">
             <div className="card-body">
-                <Table data={orderData}/>
+                <Table data={orderData} />
                 <CreateOrder open={openGroup} close={handleCloseOrder} />
-                <Button className="btn" variant="contained" onClick={handleOpenOrder}>
+                <Button
+                    className="btn"
+                    variant="contained"
+                    onClick={handleOpenOrder}
+                >
                     Добавить заказ
                 </Button>
             </div>

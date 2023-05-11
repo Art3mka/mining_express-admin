@@ -1,40 +1,38 @@
-import React, { useCallback, useContext, useMemo, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 
-import MaterialReactTable, {
-    type MaterialReactTableProps,
-    type MRT_Cell,
-    type MRT_ColumnDef,
-    type MRT_Row,
-} from 'material-react-table';
+import MaterialReactTable, { type MRT_ColumnDef } from 'material-react-table';
 import { Delete, Edit } from '@mui/icons-material';
 import { Orders, tableProps } from './types';
 import { Box, IconButton, Tooltip } from '@mui/material';
-import { updateOrder } from '../../services/api/api';
 import { UserContext } from '../../services/context/contextProvider';
 import EditOrder from '../../views/Orders/EditOrder';
+import { DraggableDialog } from '../ConfirmationPopup';
+import ConfirmationLoader from '../ConfirmationLoader';
 
 const Table = (data: any) => {
     const [openGroup, setOpenGroup] = useState(false);
     const [editData, setEditData] = useState<Orders>();
-    const handleOpenOrder = () => setOpenGroup(true);
-    const handleCloseOrder = () => setOpenGroup(false);
+    const [isOpenConfirm, setIsOpenConfirm] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [deleteOrderId, setDeleteOrderId] = useState<number>(0);
     const { user } = useContext(UserContext);
     const { token } = user;
-    const [tableData, setTableData] = useState<Orders[]>(() => data);
-    // console.log('token', token);
-    
-    const sendEmail = (row: any) => {
-        console.log('click', row.original);
+
+    const handleDeleteRow = async (row: any) => {
+        const { original } = row;
+        setDeleteOrderId(original.orderId)
+        setIsOpenConfirm(true);
+        console.log('original.orderId ', original.orderId);
     };
 
-    const handleDeleteRow = useCallback(
-        (row: MRT_Row<Orders>) => {
-            // api delete request here, then refetch or update local table data for re-render
-            tableData.splice(row.index, 1);
-            setTableData([...tableData]);
-        },
-        [tableData]
-    );
+    const handleOpenOrder = () => setOpenGroup(true);
+
+    const handleCloseOrder = () => setOpenGroup(false);
+
+    const handleCloseConfirm = () => setIsOpenConfirm(false);
+
+    const handleStartLoading = () => setIsLoading(true);
+    const handleFinishLoading = () => setIsLoading(false);
 
     const columns = useMemo<MRT_ColumnDef<Orders>[]>(
         () => [
@@ -92,56 +90,64 @@ const Table = (data: any) => {
         []
     );
 
-    const handleSaveRow: MaterialReactTableProps<Orders>['onEditingRowSave'] =
-        async ({ values }) => {
-            console.log('values :>> ', values);
-            await updateOrder(values, token.accessToken)
-        };
-
-        
-
     return (
-        <div className="mui-table">
-            <EditOrder open={openGroup} editData={editData} close={handleCloseOrder}/>
-            <MaterialReactTable
-                {...tableProps}
-                columns={columns}
-                data={data.data || []}
-                initialState={{ showColumnFilters: true }}
-                editingMode="modal"
-                displayColumnDefOptions={{
-                    'mrt-row-actions': {
-                        size: 50,
-                        muiTableHeadCellProps: {
-                            align: 'center',
+        <>
+            <div className="mui-table">
+                <EditOrder
+                    open={openGroup}
+                    editData={editData}
+                    close={handleCloseOrder}
+                />
+                <MaterialReactTable
+                    {...tableProps}
+                    columns={columns}
+                    data={data.data || []}
+                    initialState={{ showColumnFilters: true }}
+                    editingMode="modal"
+                    displayColumnDefOptions={{
+                        'mrt-row-actions': {
+                            size: 50,
+                            muiTableHeadCellProps: {
+                                align: 'center',
+                            },
+                            header: '',
                         },
-                        header: '',
-                    },
-                }}
-                renderRowActions={({ row, table }) => (
-                    <Box sx={{ display: 'flex', gap: '1rem' }}>
-                        <Tooltip arrow placement="left" title="Edit">
-                            <IconButton
-                                onClick={() => {
-                                    setEditData(row.original)
-                                    handleOpenOrder()
-                                }}
-                            >
-                                <Edit />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip arrow placement="right" title="Delete">
-                            <IconButton
-                                color="error"
-                                onClick={() => handleDeleteRow(row)}
-                            >
-                                <Delete />
-                            </IconButton>
-                        </Tooltip>
-                    </Box>
-                )}
+                    }}
+                    renderRowActions={({ row, table }) => (
+                        <Box sx={{ display: 'flex', gap: '1rem' }}>
+                            <Tooltip arrow placement="left" title="Edit">
+                                <IconButton
+                                    onClick={() => {
+                                        setEditData(row.original);
+                                        handleOpenOrder();
+                                    }}
+                                >
+                                    <Edit />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip arrow placement="right" title="Delete">
+                                <IconButton
+                                    color="error"
+                                    onClick={() => {
+                                        handleDeleteRow(row);
+                                    }}
+                                >
+                                    <Delete />
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
+                    )}
+                />
+            </div>
+            <ConfirmationLoader openLoader={isLoading} />
+            <DraggableDialog
+                openConfirm={isOpenConfirm}
+                closeConfirm={handleCloseConfirm}
+                startLoader={handleStartLoading}
+                finishLoader={handleFinishLoading}
+                deleteOrderId={deleteOrderId}
             />
-        </div>
+        </>
     );
 };
 

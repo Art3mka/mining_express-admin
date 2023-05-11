@@ -12,7 +12,7 @@ const CreateDriver = ({ open, close }: CreateDriverProps) => {
     const submitRef = useRef()
     return (
         <ModalComponent submitRef={submitRef} open={open} close={close}>
-            <CreateDriverForm submitRef={submitRef} />
+            <CreateDriverForm submitRef={submitRef} close={close}/>
         </ModalComponent>
     )
 }

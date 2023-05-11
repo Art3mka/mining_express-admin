@@ -35,10 +35,10 @@ const EditOrderForm = ({
     const { token } = user;
     const [tripsData, setTripsData] = useState([]);
     const [depatureData, setDepatureData] = useState([]);
-
+    console.log('editData :>> ', editData);
     const [isLoading, setIsLoading] = useState(false);
     const [modifiedTripsData, setModifiedTripsData] = useState([]);
-    const [stationInfo, setStationInfo] = useState([{value: ''}]);
+    const [stationInfo, setStationInfo] = useState([{ value: '' }]);
     const [routeIdValue, setRouteIdValue] = useState('');
     const [stationId, setStationId] = useState('');
     const [defaultBusStopId, setDefaultBusStopId] = useState(0);
@@ -55,8 +55,6 @@ const EditOrderForm = ({
     });
 
     const editValue = true;
-
-    // debugger
 
     const onSubmit = async (data: IFormInput) => {
         try {
@@ -96,7 +94,6 @@ const EditOrderForm = ({
         return Number(result);
     };
 
-    debugger
     //информация о рейсах
     const getTripsData = async (id: string, date: any) => {
         try {
@@ -132,7 +129,6 @@ const EditOrderForm = ({
             getTripsData(String(defaultRoutesValue), dayOfWeek);
         }
     }, [defaultRoutesValue, editData?.date]);
-    // debugger
     useEffect(() => {
         if (routeIdValue) {
             //важная штука
@@ -195,7 +191,6 @@ const EditOrderForm = ({
                 2
             ),
         }));
-        debugger
 
         const sortedStationData = stationDataModify?.map((item: any) => ({
             label: parseFloat(item.label.replace(/:/, '.')).toFixed(2),
@@ -226,7 +221,7 @@ const EditOrderForm = ({
             getStationInfo(stationId, modifiedTripsData, depatureData as any);
         }
     }, [stationId]);
-    // debugger
+
     return (
         <>
             {isLoading ? (

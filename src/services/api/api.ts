@@ -83,14 +83,13 @@ export const updateOrder = async (postData: any, token: string) => {
     return data;
 };
 
-export const deleteOrder = async (postData: string, token: string) => {
+export const deleteOrder = async (orderId: number, token: string) => {
     const { data } = await makeRequest({
-        url: `${url}/api/orders/cancel`,
+        url: `${url}/api/orders/cancel?orderToDeleteId=${orderId}`,
         headers: {
             Authorization: `Bearer ${token}`,
         },
         method: RequestEnum.DELETE,
-        data: postData,
     });
 
     return data;
