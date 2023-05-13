@@ -1,20 +1,20 @@
-import React, { useContext } from 'react'
-import { useForm, Controller } from 'react-hook-form'
-import './index.scss'
-import Input from '../../../../components/Input'
-import { UserContext } from '../../../../services/context/contextProvider'
-import { createDriver } from '../../../../services/api/api'
+import React, { useContext } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import './index.scss';
+import Input from '../../../../components/Input';
+import { UserContext } from '../../../../services/context/contextProvider';
+import { createDriver } from '../../../../services/api/api';
 
 interface IFormInput {
-    userId: number
-    login: string
-    password: string
-    phone: number
+    userId: number;
+    login?: string;
+    password?: string;
+    phone?: string;
 }
 
-
 interface CreateDriverFormProps {
-    submitRef: any
+    submitRef: any;
+    close: () => void;
 }
 
 const inputData = [
@@ -30,29 +30,34 @@ const inputData = [
         key: 'phone',
         label: 'Телефон',
     },
-]
+];
 
-const CreateDriverForm = ({ submitRef }: CreateDriverFormProps) => {
-    const { control, handleSubmit } = useForm<IFormInput>()
-    const { user } = useContext(UserContext)
-    const {token} = user
+const CreateDriverForm = ({ submitRef, close }: CreateDriverFormProps) => {
+    const { control, handleSubmit } = useForm<IFormInput>();
+    const { user } = useContext(UserContext);
+    const { token } = user;
     console.log('create driver', token.accessToken);
-    
+
     const onSubmit = async (data: IFormInput) => {
-        await createDriver(data, token.accessToken)
-    }
+        try {
+            await createDriver(data, token.accessToken);
+            close();
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className='form'>
-            <div className='container'>
-                <div className='container-form'>
+        <form onSubmit={handleSubmit(onSubmit)} className="form">
+            <div className="container">
+                <div className="container-form">
                     {inputData.map(({ label, key }) => (
                         <Controller
                             render={({ field }) => (
                                 <Input
                                     {...field}
                                     label={label}
-                                    className='form-input'
+                                    className="form-input"
                                 />
                             )}
                             key={key}
@@ -60,14 +65,14 @@ const CreateDriverForm = ({ submitRef }: CreateDriverFormProps) => {
                             // @ts-ignore
                             name={key}
                             control={control}
-                            defaultValue=''
+                            defaultValue=""
                         />
                     ))}
                 </div>
             </div>
-            <button type='submit' ref={submitRef} />
+            <button type="submit" ref={submitRef} />
         </form>
-    )
-}
+    );
+};
 
-export default CreateDriverForm
+export default CreateDriverForm;

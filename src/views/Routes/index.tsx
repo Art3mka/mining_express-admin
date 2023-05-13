@@ -8,7 +8,7 @@ const Routes = () => {
     const [routesData, setOrderData] = useState();
     const getRoutesData = async () => {
         const data = await getRoutes()
-        console.log(data);
+        console.log('routes', data);
         setOrderData(data)
         return data
     }

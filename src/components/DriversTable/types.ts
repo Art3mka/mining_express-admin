@@ -1,26 +1,9 @@
 export type Drivers = {
     userId: number
-    login: string
-    password: string
-    phone: number
+    login?: string
+    password?: string
+    phone?: string
 }
-
-export const citiesList = [
-    'San Francisco',
-    'Richmond',
-    'Riverside',
-    'Los Angeles',
-    'Blacksburg',
-    'New York',
-]
-
-export const usStateList = [
-    'California',
-    'Virginia',
-    'South Carolina',
-    'New York',
-    'Texas',
-]
 
 const enableEditing = true
 const enableStickyHeader = true

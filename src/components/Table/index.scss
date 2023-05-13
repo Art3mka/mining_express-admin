@@ -23,18 +23,25 @@ tfoot .th {
 
 .debouncedInput {
     margin-bottom: 10px;
-    width: 250px!important;
+    width: 250px !important;
 }
 
 .tr {
     display: flex;
+
     div {
         width: 190px;
         text-align: center;
     }
 }
 
-.customInput{
-    width: 189px!important;
+.customInput {
+    width: 189px !important;
     border-radius: 0px;
+}
+
+.mui-table {
+    [class~='MuiPaper-root'] {
+        display: grid;
+    }
 }

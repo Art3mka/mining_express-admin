@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
 
-interface Props {}
-
 const Sidebar = () => {
     
     return (
@@ -45,7 +43,7 @@ const Sidebar = () => {
                                 <span className='hide-menu'>Маршруты</span>
                             </Link>
                         </li>
-                        <li className='sidebar-item'>
+                        {/* <li className='sidebar-item'>
                             <Link
                                 className='sidebar-link waves-effect waves-dark sidebar-link'
                                 to='/trips'
@@ -53,7 +51,7 @@ const Sidebar = () => {
                             >
                                 <span className='hide-menu'>Рейсы</span>
                             </Link>
-                        </li>
+                        </li> */}
                     </ul>
                 </nav>
             </div>
