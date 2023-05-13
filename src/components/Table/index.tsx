@@ -1,12 +1,11 @@
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import MaterialReactTable, { type MRT_ColumnDef } from 'material-react-table';
 import { Delete, Edit } from '@mui/icons-material';
 import { Orders, tableProps } from './types';
 import { Box, IconButton, Tooltip } from '@mui/material';
-import { UserContext } from '../../services/context/contextProvider';
 import EditOrder from '../../views/Orders/EditOrder';
-import { DraggableDialog } from '../ConfirmationPopup';
+import { DraggableDialog } from '../ConfirmationPopupOrder';
 import ConfirmationLoader from '../ConfirmationLoader';
 
 const Table = (data: any) => {
@@ -15,8 +14,6 @@ const Table = (data: any) => {
     const [isOpenConfirm, setIsOpenConfirm] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [deleteOrderId, setDeleteOrderId] = useState<number>(0);
-    const { user } = useContext(UserContext);
-    const { token } = user;
 
     const handleDeleteRow = async (row: any) => {
         const { original } = row;

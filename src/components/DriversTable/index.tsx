@@ -1,16 +1,21 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react';
 import MaterialReactTable, {
-    MaterialReactTableProps,
     MRT_ColumnDef as mrtColumnDef,
-} from 'material-react-table'
-import { Drivers, tableProps } from './types'
-import './index.scss'
+} from 'material-react-table';
+import { Drivers, tableProps } from './types';
+import './index.scss';
+import { Box, IconButton, Tooltip } from '@mui/material';
+import { Delete, Edit } from '@mui/icons-material';
+import ConfirmationLoader from '../ConfirmationLoader';
+import { DraggableDialog } from '../ConfirmationPopupDriver';
+import EditDriver from '../../views/Drivers/EditDriver';
 
-
-const DriversTable = (data: any) => {
-    const sendEmail = (row: any) => {
-        console.log('click', row)
-    }
+const DriversTable = (data: any, close: () => void) => {
+    const [openGroup, setOpenGroup] = useState(false);
+    const [editData, setEditData] = useState<Drivers>();
+    const [isOpenConfirm, setIsOpenConfirm] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [deleteDriverId, setDeleteDriverId] = useState<number>(0);
 
     const columns = useMemo<mrtColumnDef<Drivers>[]>(
         () => [
@@ -19,7 +24,7 @@ const DriversTable = (data: any) => {
                 header: 'Номер',
                 size: 50,
                 // default
-                filterVariant: 'text', 
+                filterVariant: 'text',
             },
             {
                 accessorKey: 'login',
@@ -41,39 +46,82 @@ const DriversTable = (data: any) => {
             },
         ],
         []
-    )
+    );
 
-    const [tableData, setTableData] = useState<Drivers[]>(() => data)
+    const handleDeleteRow = async (row: any) => {
+        const { original } = row;
+        setDeleteDriverId(original.userId);
+        setIsOpenConfirm(true);
+        console.log('original.orderId ', original.userId);
+    };
 
-    const handleSaveRow: MaterialReactTableProps<Drivers>['onEditingRowSave'] =
-        async ({ exitEditingMode, row, values }) => {
-            // if using flat data and simple accessorKeys/ids, you can just do a simple assignment here.
-            tableData[row.index] = values
+    const handleOpenOrder = () => setOpenGroup(true);
 
-            // send/receive api updates here
-            setTableData([...tableData])
-            exitEditingMode() // required to exit editing mode
-        }
-        
+    const handleCloseOrder = () => setOpenGroup(false);
+
+    const handleCloseConfirm = () => setIsOpenConfirm(false);
+
+    const handleStartLoading = () => setIsLoading(true);
+    const handleFinishLoading = () => setIsLoading(false);
+
     return (
-        <MaterialReactTable
-            {...tableProps}
-            columns={columns}
-            data={data.data || []}
-            initialState={{ showColumnFilters: true }}
-            editingMode='row'
-            displayColumnDefOptions={{
-                'mrt-row-actions': {
-                    size: 100,
-                    muiTableHeadCellProps: {
-                        align: 'center',
+        <>
+            <EditDriver
+                open={openGroup}
+                editData={editData}
+                close={handleCloseOrder}
+                closeEdit={close}
+            />
+            <MaterialReactTable
+                {...tableProps}
+                columns={columns}
+                data={data.data || []}
+                initialState={{ showColumnFilters: true }}
+                editingMode="row"
+                displayColumnDefOptions={{
+                    'mrt-row-actions': {
+                        size: 100,
+                        muiTableHeadCellProps: {
+                            align: 'center',
+                        },
+                        header: '',
                     },
-                    header: '',
-                },
-            }}
-            onEditingRowSave={handleSaveRow}
-        />
-    )
-}
+                }}
+                renderRowActions={({ row, table }) => (
+                    <Box sx={{ display: 'flex', gap: '1rem' }}>
+                        <Tooltip arrow placement="left" title="Edit">
+                            <IconButton
+                                onClick={() => {
+                                    setEditData(row.original);
+                                    handleOpenOrder();
+                                }}
+                            >
+                                <Edit />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip arrow placement="right" title="Delete">
+                            <IconButton
+                                color="error"
+                                onClick={() => {
+                                    handleDeleteRow(row);
+                                }}
+                            >
+                                <Delete />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
+                )}
+            />
+            <ConfirmationLoader openLoader={isLoading} />
+            <DraggableDialog
+                openConfirm={isOpenConfirm}
+                closeConfirm={handleCloseConfirm}
+                startLoader={handleStartLoading}
+                finishLoader={handleFinishLoading}
+                deleteDriverId={deleteDriverId}
+            />
+        </>
+    );
+};
 
-export default DriversTable
+export default DriversTable;

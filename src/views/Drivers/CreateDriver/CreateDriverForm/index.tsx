@@ -7,9 +7,9 @@ import { createDriver } from '../../../../services/api/api';
 
 interface IFormInput {
     userId: number;
-    login: string;
-    password: string;
-    phone: number;
+    login?: string;
+    password?: string;
+    phone?: string;
 }
 
 interface CreateDriverFormProps {

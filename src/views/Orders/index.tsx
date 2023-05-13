@@ -3,8 +3,8 @@ import CreateOrder from './CreateOrder';
 import { useContext, useEffect, useState } from 'react';
 import Table from '../../components/Table';
 import { getOrders } from '../../services/api/api';
-import './index.scss';
 import { UserContext } from '../../services/context/contextProvider';
+import './index.scss';
 
 const Orders = () => {
     const [openGroup, setOpenEditOrder] = useState(false);

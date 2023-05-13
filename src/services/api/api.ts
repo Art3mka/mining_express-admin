@@ -1,3 +1,4 @@
+import { Drivers } from '../../components/DriversTable/types';
 import { makeRequest } from '../makeRequest';
 import { RequestEnum } from '../types';
 
@@ -56,7 +57,7 @@ export const createOrder = async (postData: any, token: string) => {
 
     return data;
 };
-export const createDriver = async (postData: any, token: string) => {
+export const createDriver = async (postData: Drivers, token: string) => {
     const { login, password, phone } = postData;
     const { data } = await makeRequest({
         url: `${url}/users/drivers?Login=${login}&Password=${password}&Phone=${phone}`,
@@ -95,7 +96,19 @@ export const deleteOrder = async (orderId: number, token: string) => {
     return data;
 };
 
-export const updateDriver = async (postData: string, token: string) => {
+export const deleteDriver = async (userId: number, token: string) => {
+    const { data } = await makeRequest({
+        url: `${url}/users?userId=${userId}`,
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        method: RequestEnum.DELETE,
+    });
+
+    return data;
+};
+
+export const updateDriver = async (postData: Drivers, token: string) => {
     const { data } = await makeRequest({
         url: `${url}/users/updateDriver`,
         headers: {

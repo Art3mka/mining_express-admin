@@ -15,20 +15,22 @@ const Drivers = () => {
     const handleOpenDriver = () => setOpenCreateDriverForm(true);
     const handleCloseDriver = () => setOpenCreateDriverForm(false);
 
-    const getOrdersData = async () => {
+    const getDriversData = async () => {
         const data = await getDrivers(token?.accessToken);
         console.log(data);
         setDriverData(data);
     };
 
+    console.log('openCreateDriverForm :>> ', openCreateDriverForm);
+
     useEffect(() => {
-        getOrdersData();
+        getDriversData();
     }, [openCreateDriverForm]);
 
     return (
         <div className="card">
             <div className="card-body">
-                <DriversTable data={driverData} />
+                <DriversTable close={!handleCloseDriver} data={driverData} />
                 <CreateDriver
                     open={openCreateDriverForm}
                     close={handleCloseDriver}
