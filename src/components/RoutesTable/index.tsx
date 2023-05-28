@@ -58,7 +58,7 @@ const RoutesTable = (data: any) => {
         }
 
     return (
-        <div>
+
             <Table
                 className='table__routes'
                 width={1000}
@@ -88,27 +88,7 @@ const RoutesTable = (data: any) => {
                         )}
                     </Cell>
                 </Column>
-
             </Table>
-            <MaterialReactTable
-                {...tableProps}
-                columns={columns}
-                data={data.data || []}
-                initialState={{ showColumnFilters: true }}
-                editingMode='row'
-                displayColumnDefOptions={{
-                    'mrt-row-actions': {
-                        size: 100,
-                        muiTableHeadCellProps: {
-                            align: 'center',
-                        },
-                        header: '',
-                    },
-                }}
-                onEditingRowSave={handleSaveRow}
-            />
-        </div>
-
 
     )
 }
