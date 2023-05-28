@@ -23,8 +23,7 @@ const DriversTable = (data: any, close: () => void) => {
                 accessorKey: 'userId',
                 header: 'Номер',
                 size: 50,
-                // default
-                filterVariant: 'text',
+                filterVariant: 'text', 
             },
             {
                 accessorKey: 'login',
