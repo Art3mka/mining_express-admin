@@ -90,12 +90,6 @@ const Login = ({ token }: any) => {
                             id='password'
                             autoComplete='current-password'
                         />
-                        {/* <FormControlLabel
-                            control={
-                                <Checkbox value='remember' color='primary' />
-                            }
-                            label='Remember me'
-                        /> */}
                         <Button
                             type='submit'
                             fullWidth
@@ -104,18 +98,6 @@ const Login = ({ token }: any) => {
                         >
                             Sign In
                         </Button>
-                        {/* <Grid container>
-                            <Grid item xs>
-                                <Link href='/recovery' variant='body2'>
-                                    Forgot password?
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link href='/signup' variant='body2'>
-                                    {'Do not have an account? Sign Up'}
-                                </Link>
-                            </Grid>
-                        </Grid> */}
                     </Box>
                 </Box>
             </Container>

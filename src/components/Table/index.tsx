@@ -18,7 +18,6 @@ const Table = (data: any) => {
                 accessorKey: 'orderId',
                 header: 'Номер',
                 size: 10,
-                // default
                 filterVariant: 'text', 
             },
             {
@@ -65,12 +64,10 @@ const Table = (data: any) => {
 
     const handleSaveRow: MaterialReactTableProps<Orders>['onEditingRowSave'] =
         async ({ exitEditingMode, row, values }) => {
-            // if using flat data and simple accessorKeys/ids, you can just do a simple assignment here.
             tableData[row.index] = values
 
-            // send/receive api updates here
             setTableData([...tableData])
-            exitEditingMode() // required to exit editing mode
+            exitEditingMode()
         }
         
     return (

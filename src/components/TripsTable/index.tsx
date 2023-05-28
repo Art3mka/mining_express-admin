@@ -18,7 +18,6 @@ const TripsTable = (data: any) => {
                 accessorKey: 'userId',
                 header: 'Номер',
                 size: 50,
-                // default
                 filterVariant: 'text', 
             },
             {
@@ -47,12 +46,10 @@ const TripsTable = (data: any) => {
 
     const handleSaveRow: MaterialReactTableProps<Drivers>['onEditingRowSave'] =
         async ({ exitEditingMode, row, values }) => {
-            // if using flat data and simple accessorKeys/ids, you can just do a simple assignment here.
             tableData[row.index] = values
 
-            // send/receive api updates here
             setTableData([...tableData])
-            exitEditingMode() // required to exit editing mode
+            exitEditingMode() 
         }
         
     return (

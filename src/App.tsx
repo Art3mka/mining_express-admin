@@ -27,25 +27,6 @@ const App = () => {
         }
     }, [userToken])
 
-    // const decodedToken: JwtPayload = jwtDecode(userToken);
-
-    // try {     
-    //     const decodedToken: JwtPayload = jwtDecode(userToken);
-
-        
-
-    //     const isValid = getIsValid(decodedToken.exp)
-    //     console.log(isValid)
-    // } catch (error) {
-    //     console.log(error)
-    // }
-
-    // useEffect(() => {
-    //     const isValid = getIsValid(decodedToken.exp)
-    //     setIsValid(isValid)
-    // }, [userToken])
-    
-
     const { user } = useContext(UserContext);
     console.log('user', user);
     console.log(localStorage)
@@ -92,6 +73,3 @@ const App = () => {
 
 export default App;
 
-
-
-// user?.token?.accessToken

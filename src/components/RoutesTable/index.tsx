@@ -18,7 +18,6 @@ const RoutesTable = (data: any) => {
                 accessorKey: 'routeId',
                 header: 'Номер',
                 size: 200,
-                // default
                 filterVariant: 'text', 
             },
             {
@@ -35,12 +34,10 @@ const RoutesTable = (data: any) => {
 
     const handleSaveRow: MaterialReactTableProps<Routes>['onEditingRowSave'] =
         async ({ exitEditingMode, row, values }) => {
-            // if using flat data and simple accessorKeys/ids, you can just do a simple assignment here.
             tableData[row.index] = values
 
-            // send/receive api updates here
             setTableData([...tableData])
-            exitEditingMode() // required to exit editing mode
+            exitEditingMode()
         }
         
     return (
