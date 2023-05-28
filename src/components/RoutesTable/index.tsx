@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import MaterialReactTable, {
     MaterialReactTableProps,
     MRT_ColumnDef as mrtColumnDef,
@@ -7,7 +7,24 @@ import { Routes, tableProps } from './types'
 import './index.scss'
 
 
+
+
+import { Table, Button } from 'rsuite'
+
+const { Column, HeaderCell, Cell } = Table;
+
+
+
+
+
+
+
+
 const RoutesTable = (data: any) => {
+
+    const [tableInfo, setTableInfo] = useState(data.data)
+
+    debugger
     const sendEmail = (row: any) => {
         console.log('click', row)
     }
@@ -18,7 +35,7 @@ const RoutesTable = (data: any) => {
                 accessorKey: 'routeId',
                 header: 'Номер',
                 size: 200,
-                filterVariant: 'text', 
+                filterVariant: 'text',
             },
             {
                 accessorKey: 'routeName',
@@ -39,25 +56,60 @@ const RoutesTable = (data: any) => {
             setTableData([...tableData])
             exitEditingMode()
         }
-        
+
     return (
-        <MaterialReactTable
-            {...tableProps}
-            columns={columns}
-            data={data.data || []}
-            initialState={{ showColumnFilters: true }}
-            editingMode='row'
-            displayColumnDefOptions={{
-                'mrt-row-actions': {
-                    size: 100,
-                    muiTableHeadCellProps: {
-                        align: 'center',
+        <div>
+            <Table
+                className='table__routes'
+                width={1000}
+                height={400}
+                data={data.data || []}
+                onRowClick={rowData => {
+                    console.log(rowData);
+                }}>
+
+                <Column width={100} align="center" fixed>
+                    <HeaderCell>Id</HeaderCell>
+                    <Cell dataKey="routeId" />
+                </Column>
+
+                <Column width={500} align="center" fixed>
+                    <HeaderCell>Маршрут</HeaderCell>
+                    <Cell dataKey="routeName" />
+                </Column>
+
+                <Column width={80} fixed="right">
+                    <HeaderCell>...</HeaderCell>
+                    <Cell >
+                        {rowData => (
+                            <Button className='button__edit' appearance="link" onClick={() => alert(`id:${rowData.routeId}`)}>
+                                Edit
+                            </Button>
+                        )}
+                    </Cell>
+                </Column>
+
+            </Table>
+            <MaterialReactTable
+                {...tableProps}
+                columns={columns}
+                data={data.data || []}
+                initialState={{ showColumnFilters: true }}
+                editingMode='row'
+                displayColumnDefOptions={{
+                    'mrt-row-actions': {
+                        size: 100,
+                        muiTableHeadCellProps: {
+                            align: 'center',
+                        },
+                        header: '',
                     },
-                    header: '',
-                },
-            }}
-            onEditingRowSave={handleSaveRow}
-        />
+                }}
+                onEditingRowSave={handleSaveRow}
+            />
+        </div>
+
+
     )
 }
 

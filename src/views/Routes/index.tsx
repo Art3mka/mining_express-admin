@@ -17,6 +17,8 @@ const Routes = () => {
         getRoutesData()
     }, [])
 
+    console.log(routesData)
+
     return (
         <div className='card'>
             <div className='card-body'>
