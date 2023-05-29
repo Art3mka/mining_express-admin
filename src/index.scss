@@ -4,14 +4,15 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-.wrapper{
+.wrapper {
     display: flex;
 }
 
-.container{
-    width: 100%;
+.container {
+    // width: 100%;
     padding: 30px;
 }
+
 .row {
     --bs-gutter-x: 30px;
     --bs-gutter-y: 0;
@@ -29,8 +30,8 @@
 .topbar {
     position: relative;
     z-index: 50;
-    -webkit-box-shadow: 5px 0px 10px rgba(0,0,0,0.5);
-    box-shadow: 5px 0px 10px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 5px 0px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 5px 0px 10px rgba(0, 0, 0, 0.5);
     background: #02060a;
     height: 70px;
     display: flex;
@@ -57,8 +58,8 @@
     top: 0px;
     z-index: 10;
     background: #fff;
-    -webkit-box-shadow: 1px 0px 20px rgba(0,0,0,0.08);
-    box-shadow: 1px 0px 20px rgba(0,0,0,0.08);
+    -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.08);
 }
 
 .left-sidebar[data-sidebarbg=skin6] {
@@ -78,22 +79,27 @@
     margin: 0px;
     padding: 0px;
 }
+
 .sidebar-nav ul .sidebar-item {
     margin-bottom: 10px;
 }
+
 .sidebar-nav ul li {
     list-style: none;
 }
+
 .sidebar-nav ul .sidebar-item {
     margin-bottom: 10px;
 }
+
 .sidebar-nav ul .sidebar-item .sidebar-link.active {
     background: #26c6da;
     color: #fff;
     font-weight: 400;
-    -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
+
 .sidebar-nav ul .sidebar-item .sidebar-link i {
     width: 27px;
     font-size: 21px;
@@ -104,7 +110,7 @@
 }
 
 .me-2 {
-    margin-right: 0.5rem!important;
+    margin-right: 0.5rem !important;
 }
 
 .sidebar-nav ul .sidebar-item .sidebar-link .hide-menu {
@@ -145,7 +151,7 @@
     -webkit-tap-highlight-color: transparent;
     vertical-align: middle;
     z-index: 1;
-    will-change: opacity,transform;
+    will-change: opacity, transform;
     -webkit-transition: all 0.1s ease-out;
     transition: all 0.1s ease-out;
 }
@@ -175,8 +181,8 @@
 .card {
     border: 1px solid #d7dfe3;
     border-radius: 4px;
-    -webkit-box-shadow: 0px 5px 20px rgba(0,0,0,0.05);
-    box-shadow: 0px 5px 20px rgba(0,0,0,0.05);
+    -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05);
     color: #455a64;
     margin-right: 10px;
 }
@@ -184,6 +190,7 @@
 .card-body {
     padding: 1.25rem;
 }
+
 .card-body {
     -webkit-box-flex: 1;
     -ms-flex: 1 1 auto;

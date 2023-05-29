@@ -1,4 +1,4 @@
-import { Drivers } from '../../components/DriversTable/types';
+import { Drivers, Trip, UpdateTrip } from '../../components/DriversTable/types';
 import { makeRequest } from '../makeRequest';
 import { RequestEnum } from '../types';
 
@@ -164,6 +164,41 @@ export const getTrips = async (id: string, date: number) => {
     const { data } = await makeRequest({
         url: `${url}/api/trips?RouteId=${id}&DayOfWeekNumber=${date}`,
         method: RequestEnum.GET,
+    });
+
+    return data;
+};
+
+export const getAllTrips = async () => {
+    const { data } = await makeRequest({
+        url: `${url}/api/trips/getAll`,
+        method: RequestEnum.GET,
+    });
+
+    return data;
+};
+
+export const createTrip = async (postData: Trip, token: string) => {
+    const { data } = await makeRequest({
+        url: `${url}/api/trips`,
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        method: RequestEnum.POST,
+        data: postData,
+    });
+
+    return data;
+};
+
+export const updateTrip = async (postData: UpdateTrip, token: string) => {
+    const { data } = await makeRequest({
+        url: `${url}/api/trips`,
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        method: RequestEnum.PUT,
+        data: postData,
     });
 
     return data;

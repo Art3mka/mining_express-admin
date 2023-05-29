@@ -1,79 +1,92 @@
-import React, { useMemo, useState } from 'react'
-import MaterialReactTable, {
-    MaterialReactTableProps,
-    MRT_ColumnDef as mrtColumnDef,
-} from 'material-react-table'
-import { Drivers, tableProps } from './types'
-import './index.scss'
+import { Table, Pagination } from 'rsuite';
+import './index.scss';
+import { useState } from 'react';
+import EditTripsMoad from './EditTripsModal';
+import AddTripsModal from './AddTripsModal';
 
+const { Column, HeaderCell, Cell } = Table;
 
-const TripsTable = (data: any) => {
-    const sendEmail = (row: any) => {
-        console.log('click', row)
-    }
-
-    const columns = useMemo<mrtColumnDef<Drivers>[]>(
-        () => [
-            {
-                accessorKey: 'userId',
-                header: 'Номер',
-                size: 50,
-                // default
-                filterVariant: 'text', 
-            },
-            {
-                accessorKey: 'login',
-                header: 'Login',
-                filterVariant: 'text',
-                size: 200,
-            },
-            {
-                accessorKey: 'phone',
-                header: 'Телефон',
-                size: 300,
-                filterVariant: 'text',
-            },
-            {
-                accessorKey: 'password',
-                header: 'Password',
-                size: 200,
-                filterVariant: 'text',
-            },
-        ],
-        []
-    )
-
-    const [tableData, setTableData] = useState<Drivers[]>(() => data)
-
-    const handleSaveRow: MaterialReactTableProps<Drivers>['onEditingRowSave'] =
-        async ({ exitEditingMode, row, values }) => {
-            // if using flat data and simple accessorKeys/ids, you can just do a simple assignment here.
-            tableData[row.index] = values
-
-            // send/receive api updates here
-            setTableData([...tableData])
-            exitEditingMode() // required to exit editing mode
-        }
-        
-    return (
-        <MaterialReactTable
-            {...tableProps}
-            columns={columns}
-            data={data.data || []}
-            initialState={{ showColumnFilters: true }}
-            editingMode='row'
-            displayColumnDefOptions={{
-                'mrt-row-actions': {
-                    size: 100,
-                    muiTableHeadCellProps: {
-                        align: 'center',
-                    },
-                    header: '',
-                },
-            }}
-            onEditingRowSave={handleSaveRow}
-        />
-    )
+interface ITripsData {
+    data: any;
 }
 
-export default TripsTable
+const TripsTable = ({ data }: ITripsData) => {
+    const [limit, setLimit] = useState(10);
+    const [page, setPage] = useState(1);
+
+    const handleChangeLimit = (dataKey: any) => {
+        setPage(1);
+        setLimit(dataKey);
+    };
+
+    const tripsData = data.filter((v: any, i: number) => {
+        const start = limit * (page - 1);
+        const end = start + limit;
+        return i >= start && i < end;
+    });
+
+    return (
+        <>
+            <div>
+                <Table
+                    height={540}
+                    width={1000}
+                    data={tripsData}
+                    className="tripsTable"
+                >
+                    <Column width={100} align="center" fixed>
+                        <HeaderCell>Id</HeaderCell>
+                        <Cell dataKey="tripId" />
+                    </Column>
+
+                    <Column width={250}>
+                        <HeaderCell>Дата</HeaderCell>
+                        <Cell dataKey="tripDate" />
+                    </Column>
+
+                    <Column width={250}>
+                        <HeaderCell>Отправление</HeaderCell>
+                        <Cell dataKey="departureTime" />
+                    </Column>
+
+                    <Column width={300}>
+                        <HeaderCell>Прибытие</HeaderCell>
+                        <Cell dataKey="arrivalTime" />
+                    </Column>
+
+                    <Column width={100} fixed="right">
+                        <HeaderCell>...</HeaderCell>
+
+                        <Cell style={{ padding: '6px' }}>
+                            {(rowData) => <EditTripsMoad data={rowData} />}
+                        </Cell>
+                    </Column>
+                </Table>
+                <div style={{ padding: 20 }}>
+                    <Pagination
+                        prev
+                        next
+                        first
+                        last
+                        ellipsis
+                        boundaryLinks
+                        maxButtons={5}
+                        size="xs"
+                        layout={['total', '-', 'limit', '|', 'pager', 'skip']}
+                        total={data.length}
+                        limitOptions={[10, 30, 50]}
+                        limit={limit}
+                        activePage={page}
+                        onChangePage={setPage}
+                        onChangeLimit={handleChangeLimit}
+                    />
+                </div>
+            </div>
+            <div className="modal">
+                <AddTripsModal />
+            </div>
+        </>
+    );
+};
+
+export default TripsTable;
