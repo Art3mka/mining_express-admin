@@ -1,21 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import RoutesTable from "../../components/RoutesTable";
 import { getRoutes } from "../../services/api/api";
+import { UserContext } from "../../services/context/contextProvider";
 
 interface RoutesProps {}
 
 const Routes = () => {
-    const [routesData, setOrderData] = useState();
-    const getRoutesData = async () => {
-        const data = await getRoutes()
-        console.log('routes', data);
-        setOrderData(data)
-        return data
-    }
 
-    useEffect(() => {
-        getRoutesData()
-    }, [])
+    const { user, routesData } = useContext(UserContext);
+    // const { token } = user;
 
     console.log(routesData)
 

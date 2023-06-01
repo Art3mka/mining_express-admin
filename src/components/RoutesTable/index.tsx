@@ -61,7 +61,7 @@ const RoutesTable = (data: any) => {
         <Table
             autoHeight={true}
             className='table__routes'
-            width={1000}
+            width={700}
             data={data.data || []}
             onRowClick={rowData => {
                 console.log(rowData);
@@ -70,12 +70,12 @@ const RoutesTable = (data: any) => {
 
             <Column width={100} align="center" fixed>
                 <HeaderCell>Id</HeaderCell>
-                <Cell dataKey="routeId" />
+                <Cell dataKey="value" />
             </Column>
 
             <Column width={500} align="center" fixed>
                 <HeaderCell>Маршрут</HeaderCell>
-                <Cell dataKey="routeName" />
+                <Cell dataKey="label" />
             </Column>
 
            
