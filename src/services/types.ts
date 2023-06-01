@@ -5,3 +5,10 @@ export enum RequestEnum {
     PATCH = 'patch',
     DELETE = 'delete'
 }
+
+export interface ITrip {
+    routeId: number;
+    departureTime?: string;
+    arrivalTime?: string;
+    dayOfWeekNumber?: number;
+}

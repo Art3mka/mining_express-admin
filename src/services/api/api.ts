@@ -1,6 +1,6 @@
-import { Drivers, Trip, UpdateTrip } from '../../components/DriversTable/types';
+import { Drivers, UpdateTrip } from '../../components/DriversTable/types';
 import { makeRequest } from '../makeRequest';
-import { RequestEnum } from '../types';
+import { ITrip, RequestEnum } from '../types';
 
 const url = "http://199.247.18.191:7777";
 interface IAuthData {
@@ -178,7 +178,7 @@ export const getAllTrips = async () => {
     return data;
 };
 
-export const createTrip = async (postData: Trip, token: string) => {
+export const createTrip = async (postData: ITrip, token: string) => {
     const { data } = await makeRequest({
         url: `${url}/api/trips`,
         headers: {

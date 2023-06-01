@@ -1,16 +1,19 @@
 import { Table, Pagination } from 'rsuite';
 import './index.scss';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import EditTripsMoad from './EditTripsModal';
 import AddTripsModal from './AddTripsModal';
+import { UserContext } from '../../services/context/contextProvider';
+import { ITrip } from '../../services/types';
 
 const { Column, HeaderCell, Cell } = Table;
 
 interface ITripsData {
-    data: any;
+    data: ITrip[];
 }
 
 const TripsTable = ({ data }: ITripsData) => {
+    const { routesData } = useContext(UserContext);
     const [limit, setLimit] = useState(10);
     const [page, setPage] = useState(1);
 
@@ -19,7 +22,19 @@ const TripsTable = ({ data }: ITripsData) => {
         setLimit(dataKey);
     };
 
-    const tripsData = data.filter((v: any, i: number) => {
+    const trips = data.map((trip) =>
+        Object.assign(
+            trip,
+            routesData
+                ?.map((route) => ({
+                    routeId: route.value,
+                    label: route.label,
+                }))
+                ?.find((route) => route.routeId === trip.routeId)
+        )
+    );
+
+    const tripsData = trips.filter((v, i) => {
         const start = limit * (page - 1);
         const end = start + limit;
         return i >= start && i < end;
@@ -30,11 +45,11 @@ const TripsTable = ({ data }: ITripsData) => {
             <div>
                 <Table
                     height={540}
-                    width={1000}
+                    width={1200}
                     data={tripsData}
                     className="tripsTable"
                 >
-                    <Column width={100} align="center" fixed>
+                    <Column width={50} align="center" fixed>
                         <HeaderCell>Id</HeaderCell>
                         <Cell dataKey="tripId" />
                     </Column>
@@ -42,6 +57,11 @@ const TripsTable = ({ data }: ITripsData) => {
                     <Column width={250}>
                         <HeaderCell>Дата</HeaderCell>
                         <Cell dataKey="tripDate" />
+                    </Column>
+
+                    <Column width={250}>
+                        <HeaderCell>Маршрут</HeaderCell>
+                        <Cell dataKey="label" />
                     </Column>
 
                     <Column width={250}>

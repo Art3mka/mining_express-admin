@@ -15,13 +15,6 @@ export const tableProps = {
     rowCount,
 }
 
-export interface Trip {
-    routeId: number;
-    departureTime?: string;
-    arrivalTime?: string;
-    dayOfWeekNumber?: number;
-}
-
 export interface UpdateTrip {
     tripId: number;
     departureTime?: string;

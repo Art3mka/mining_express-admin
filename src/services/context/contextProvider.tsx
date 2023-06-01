@@ -1,5 +1,6 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
 import { getRoutes } from "../api/api";
+import { IRoutes } from "../../components/TripsTable/types";
 
 interface ContextProviderProps {
     children: ReactNode;
@@ -13,7 +14,7 @@ type ContextUser = {
 export type UserContextProvider = {
     user: any;
     setUser: any;
-    routesData?: [];
+    routesData?: IRoutes[];
 }
 
 interface RoutesData {
@@ -25,7 +26,7 @@ export const UserContext = createContext({} as UserContextProvider);
 
 const ContextProvider = ({ children }: ContextProviderProps) => {
     const [user, setUser] = useState<ContextUser | null>();
-    const [routesData, setRoutesData] = useState();
+    const [routesData, setRoutesData] = useState<IRoutes[]>([]);
     const UserProvider = UserContext.Provider;
 
     const getRoutesData = async () => {

@@ -5,6 +5,11 @@ export type Drivers = {
     phone: number
 }
 
+export interface IRoutes  {
+    label: string
+    value: number
+}
+
 export const citiesList = [
     'San Francisco',
     'Richmond',
