@@ -14,3 +14,9 @@ export const tableProps = {
     enableEditing,
     rowCount,
 }
+
+export interface UpdateTrip {
+    tripId: number;
+    departureTime?: string;
+    arrivalTime?: string;
+}

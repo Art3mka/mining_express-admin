@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react";
 import TripsTable from "../../components/TripsTable";
-// import { getTrips } from "../../services/api/api";
-
-interface TripsProps {}
+import { getAllTrips } from "../../services/api/api";
+import { ITrip } from "../../services/types";
 
 const Trips = () => {
-    const [orderData, setOrderData] = useState([]);
+    const [orderData, setOrderData] = useState<ITrip[]>([]);
 
-    // const getTripsData = async () => {
-    //     const data = await getTrips()
-    //     console.log('trios', data);
-    //     setOrderData(data)
-    //     return data
-    // }
+    const getTripsData = async () => {
+        const data = await getAllTrips()
+        console.log('trips', data);
+        setOrderData(data)
+        return data
+    }
 
     useEffect(() => {
-        // getTripsData()
+        getTripsData()
     }, [])
 
     return (

@@ -21,8 +21,6 @@ const Drivers = () => {
         setDriverData(data);
     };
 
-    console.log('openCreateDriverForm :>> ', openCreateDriverForm);
-
     useEffect(() => {
         getDriversData();
     }, [openCreateDriverForm]);
