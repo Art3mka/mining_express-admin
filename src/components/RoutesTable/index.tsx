@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import MaterialReactTable, {
     MaterialReactTableProps,
     MRT_ColumnDef as mrtColumnDef,
@@ -7,60 +7,80 @@ import { Routes, tableProps } from './types'
 import './index.scss'
 
 
+
+
+import { Table, Button } from 'rsuite'
+
+const { Column, HeaderCell, Cell } = Table;
+
+
 const RoutesTable = (data: any) => {
-    const sendEmail = (row: any) => {
-        console.log('click', row)
-    }
 
-    const columns = useMemo<mrtColumnDef<Routes>[]>(
-        () => [
-            {
-                accessorKey: 'routeId',
-                header: 'Номер',
-                size: 200,
-                // default
-                filterVariant: 'text', 
-            },
-            {
-                accessorKey: 'routeName',
-                header: 'Маршрут',
-                filterVariant: 'text',
-                size: 400,
-            },
-        ],
-        []
-    )
+    // const [tableInfo, setTableInfo] = useState(data.data)
 
-    const [tableData, setTableData] = useState<Routes[]>(() => data)
+    // debugger
+    // const sendEmail = (row: any) => {
+    //     console.log('click', row)
+    // }
 
-    const handleSaveRow: MaterialReactTableProps<Routes>['onEditingRowSave'] =
-        async ({ exitEditingMode, row, values }) => {
-            // if using flat data and simple accessorKeys/ids, you can just do a simple assignment here.
-            tableData[row.index] = values
+    // const columns = useMemo<mrtColumnDef<Routes>[]>(
+    //     () => [
+    //         {
+    //             accessorKey: 'routeId',
+    //             header: 'Номер',
+    //             size: 200,
+    //             filterVariant: 'text',
+    //         },
+    //         {
+    //             accessorKey: 'routeName',
+    //             header: 'Маршрут',
+    //             filterVariant: 'text',
+    //             size: 400,
+    //         },
+    //     ],
+    //     []
+    // )
 
-            // send/receive api updates here
-            setTableData([...tableData])
-            exitEditingMode() // required to exit editing mode
-        }
-        
+    // const [tableData, setTableData] = useState<Routes[]>(() => data)
+
+    // const handleSaveRow: MaterialReactTableProps<Routes>['onEditingRowSave'] =
+    //     async ({ exitEditingMode, row, values }) => {
+    //         tableData[row.index] = values
+
+    //         setTableData([...tableData])
+    //         exitEditingMode()
+    //     }
+
+
+    const [tableInfo, setTableInfo] = useState(data.data)
+
+    
+
     return (
-        <MaterialReactTable
-            {...tableProps}
-            columns={columns}
+
+        <Table
+            autoHeight={true}
+            className='table__routes'
+            width={700}
             data={data.data || []}
-            initialState={{ showColumnFilters: true }}
-            editingMode='row'
-            displayColumnDefOptions={{
-                'mrt-row-actions': {
-                    size: 100,
-                    muiTableHeadCellProps: {
-                        align: 'center',
-                    },
-                    header: '',
-                },
+            onRowClick={rowData => {
+                console.log(rowData);
             }}
-            onEditingRowSave={handleSaveRow}
-        />
+            >
+
+            <Column width={100} align="center" fixed>
+                <HeaderCell>Id</HeaderCell>
+                <Cell dataKey="value" />
+            </Column>
+
+            <Column width={500} align="center" fixed>
+                <HeaderCell>Маршрут</HeaderCell>
+                <Cell dataKey="label" />
+            </Column>
+
+           
+        </Table>
+
     )
 }
 

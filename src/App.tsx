@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './App.css';
 import 'rsuite/dist/rsuite.min.css';
 import { Route, Routes } from 'react-router-dom';
@@ -10,16 +10,60 @@ import Trips from './views/Trips';
 import { UserContext } from './services/context/contextProvider';
 import Home from './views/Home';
 import './index.css'
+import jwtDecode, { JwtPayload } from 'jwt-decode';
 
 const App = () => {
-    const { user } = useContext(UserContext);
-    console.log('user', user);
+
+    const [isValid, setIsValid] = useState(false)
+
+    const { user, setUser } = useContext(UserContext);
+    console.log('user', user || '');
+    // console.log(localStorage)
+
+    const token = JSON.parse(JSON.stringify(localStorage.getItem(`token`)) || '{}');
+    const login = JSON.parse(JSON.stringify(localStorage.getItem(`login`)) || '{}');
+
+    useEffect(() => {
+        const decodedToken = getDecodedToken(token)
+        // console.log(decodedToken)
+        if (decodedToken !== undefined) {
+            const isValid = getIsValid(decodedToken.exp)
+            if (isValid === true) {
+                setUser({token, login})
+            }
+            setIsValid(isValid)
+        }
+    }, [token, login])
+
+    const getIsValid = (expDateUnix: any) => {
+        const curUnix = +new Date()/1000
+        if (expDateUnix>curUnix) {
+            // console.log(true)
+            return true
+        } else {
+            console.log(false)
+            return false
+        }
+    }
+
+    const getDecodedToken = (token: any) => {
+        try {     
+            const decodedToken: JwtPayload = jwtDecode(token);
+            return decodedToken
+    
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    
+
     return (
         <>
             <Routes>
                 <Route
                     path="/"
-                    element={user?.token?.accessToken ? <Home /> : <Login />}
+                    element={isValid ? <Home /> : <Login />}
                 >
                     <Route path="/drivers" element={<Drivers />} />
                     <Route path="/orders" element={<Orders />} />
@@ -32,3 +76,4 @@ const App = () => {
 };
 
 export default App;
+
