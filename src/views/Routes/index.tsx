@@ -8,7 +8,7 @@ interface RoutesProps {}
 const Routes = () => {
 
     const { user, routesData } = useContext(UserContext);
-    // const { token } = user;
+    const { token } = user;
 
     console.log(routesData)
 

@@ -16,25 +16,29 @@ const App = () => {
 
     const [isValid, setIsValid] = useState(false)
 
-    const userToken = JSON.parse(JSON.stringify(localStorage.getItem(`token`)) || '{}');
+    const { user, setUser } = useContext(UserContext);
+    console.log('user', user || '');
+    // console.log(localStorage)
+
+    const token = JSON.parse(JSON.stringify(localStorage.getItem(`token`)) || '{}');
+    const login = JSON.parse(JSON.stringify(localStorage.getItem(`login`)) || '{}');
 
     useEffect(() => {
-        const decodedToken = getDecodedToken(userToken)
-        console.log(decodedToken)
-        if (decodedToken != undefined) {
+        const decodedToken = getDecodedToken(token)
+        // console.log(decodedToken)
+        if (decodedToken !== undefined) {
             const isValid = getIsValid(decodedToken.exp)
+            if (isValid === true) {
+                setUser({token, login})
+            }
             setIsValid(isValid)
         }
-    }, [userToken])
-
-    const { user } = useContext(UserContext);
-    console.log('user', user);
-    console.log(localStorage)
+    }, [token, login])
 
     const getIsValid = (expDateUnix: any) => {
         const curUnix = +new Date()/1000
         if (expDateUnix>curUnix) {
-            console.log(true)
+            // console.log(true)
             return true
         } else {
             console.log(false)
