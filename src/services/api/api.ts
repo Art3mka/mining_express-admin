@@ -1,6 +1,6 @@
 import { Drivers, UpdateTrip } from '../../components/DriversTable/types';
 import { makeRequest } from '../makeRequest';
-import { ITrip, RequestEnum } from '../types';
+import { AssignDriver, ITrip, RequestEnum } from '../types';
 
 const url = "http://199.247.18.191:7777";
 interface IAuthData {
@@ -121,13 +121,13 @@ export const updateDriver = async (postData: Drivers, token: string) => {
     return data;
 };
 
-export const unAssignDriver = async (postData: string, token: string) => {
+export const assignDriver = async (postData: AssignDriver, token: string) => {
     const { data } = await makeRequest({
-        url: `${url}/api/tripps/unAssign`,
+        url: `${url}/api/trips/assign`,
         headers: {
             Authorization: `Bearer ${token}`,
         },
-        method: RequestEnum.PATCH,
+        method: RequestEnum.PUT,
         data: postData,
     });
 
