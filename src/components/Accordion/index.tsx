@@ -33,7 +33,19 @@ const Accordion = ({ title, value }: AccordionProps) => {
     }, []);
 
     const defenitlyTrip = tripsData.filter((trip) => value === trip.routeId);
-    console.log('defenitlyTrip :>> ', defenitlyTrip);
+    console.log('driverData :>> ', tripsData);
+
+    // const trips = tripsData.map((trip) =>
+    //     Object.assign(
+    //         trip,
+    //         driverData
+    //             ?.map((route) => ({
+    //                 routeId: route.,
+    //                 label: route.label,
+    //             }))
+    //             ?.find((route) => route.routeId === trip.routeId)
+    //     )
+    // );
 
     const drivers = driverData.map((driver) => ({
         label: driver.login,
@@ -60,7 +72,6 @@ const Accordion = ({ title, value }: AccordionProps) => {
                     ({
                         arrivalTime,
                         departureTime,
-                        dayOfWeekNumber,
                         tripId,
                         tripDate,
                     }) => (

@@ -31,8 +31,6 @@ const ContextProvider = ({ children }: ContextProviderProps) => {
     const [routesData, setRoutesData] = useState<IRoutes[]>([]);
     const [tripsData, setTripsData] = useState<ITrip[]>([]);
 
-    console.log('tripsData :>> ', tripsData);
-
     const UserProvider = UserContext.Provider;
 
     const getRoutesData = async () => {
