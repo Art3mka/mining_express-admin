@@ -1,9 +1,9 @@
 export enum RequestEnum {
-    GET = "get",
-    POST = "post",
+    GET = 'get',
+    POST = 'post',
     PUT = 'put',
     PATCH = 'patch',
-    DELETE = 'delete'
+    DELETE = 'delete',
 }
 
 export interface ITrip {
@@ -11,4 +11,11 @@ export interface ITrip {
     departureTime?: string;
     arrivalTime?: string;
     dayOfWeekNumber?: number;
+    tripId?: number;
+    tripDate?: string;
+}
+
+export interface AssignDriver {
+    userId: number;
+    tripId: number;
 }

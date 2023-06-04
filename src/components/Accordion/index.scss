@@ -1,0 +1,17 @@
+.info-list {
+    display: flex;
+    justify-content: space-evenly;
+
+    p {
+        margin: 0 !important;
+    }
+
+    .info-driver {
+        display: flex;
+
+        .driver {
+            align-self: center;
+            margin-right: 8px!important;
+        }
+    }
+}
