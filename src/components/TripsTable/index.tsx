@@ -5,6 +5,7 @@ import EditTripsMoad from './EditTripsModal';
 import AddTripsModal from './AddTripsModal';
 import { UserContext } from '../../services/context/contextProvider';
 import { ITrip } from '../../services/types';
+import Input from '../Input';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -16,6 +17,9 @@ const TripsTable = ({ data }: ITripsData) => {
     const { routesData } = useContext(UserContext);
     const [limit, setLimit] = useState(10);
     const [page, setPage] = useState(1);
+    const [sortColumn, setSortColumn] = useState();
+    const [sortType, setSortType] = useState();
+    const [loading, setLoading] = useState(false);
 
     const handleChangeLimit = (dataKey: any) => {
         setPage(1);
@@ -40,36 +44,76 @@ const TripsTable = ({ data }: ITripsData) => {
         return i >= start && i < end;
     });
 
+    const getData = () => {
+        if (sortColumn && sortType) {
+          return tripsData.sort((a, b) => {
+            let x = a[sortColumn];
+            let y = b[sortColumn];
+            if (typeof x === 'string') {
+                //@ts-ignore
+              x = x.charCodeAt();
+            }
+            if (typeof y === 'string') {
+                //@ts-ignore
+              y = y.charCodeAt();
+            }
+            if (sortType === 'asc') {
+              return x - y;
+            } else {
+              return y - x;
+            }
+          });
+        }
+        return data;
+      };
+    
+      const handleSortColumn = (sortColumn: any, sortType: any) => {
+        setLoading(true);
+        setTimeout(() => {
+          setLoading(false);
+          setSortColumn(sortColumn);
+          setSortType(sortType);
+        }, 500);
+      };
+
     return (
         <>
+        <div className='tripstable-input'>
+            <Input  label='Поиск' placeholder='Поиск' onChange={() => {console.log('event')}}/>
+        </div>
             <div>
                 <Table
                     height={540}
                     width={1200}
-                    data={tripsData}
+                    // data={tripsData}
                     className="tripsTable"
+                    data={getData()}
+                    sortColumn={sortColumn}
+                    sortType={sortType}
+                    onSortColumn={handleSortColumn}
+                    loading={loading}
                 >
-                    <Column width={50} align="center" fixed>
+                    <Column width={50} align="center" fixed sortable>
                         <HeaderCell>Id</HeaderCell>
                         <Cell dataKey="tripId" />
                     </Column>
 
-                    <Column width={250}>
-                        <HeaderCell>Дата</HeaderCell>
+                    <Column width={250} sortable>
+                        <HeaderCell>Дата</HeaderCell >
                         <Cell dataKey="tripDate" />
                     </Column>
 
-                    <Column width={250}>
+                    <Column width={250} sortable>
                         <HeaderCell>Маршрут</HeaderCell>
                         <Cell dataKey="label" />
                     </Column>
 
-                    <Column width={250}>
+                    <Column width={250} sortable>
                         <HeaderCell>Отправление</HeaderCell>
                         <Cell dataKey="departureTime" />
                     </Column>
 
-                    <Column width={300}>
+                    <Column width={300} sortable>
                         <HeaderCell>Прибытие</HeaderCell>
                         <Cell dataKey="arrivalTime" />
                     </Column>
@@ -94,7 +138,7 @@ const TripsTable = ({ data }: ITripsData) => {
                         size="xs"
                         layout={['total', '-', 'limit', '|', 'pager', 'skip']}
                         total={data.length}
-                        limitOptions={[10, 30, 50]}
+                        limitOptions={[30]}
                         limit={limit}
                         activePage={page}
                         onChangePage={setPage}
