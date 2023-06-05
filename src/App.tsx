@@ -1,16 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
-import './App.css';
-import 'rsuite/dist/rsuite.min.css';
 import { Route, Routes } from 'react-router-dom';
+import jwtDecode, { JwtPayload } from 'jwt-decode';
+import { UserContext } from './services/context/contextProvider';
+
 import Drivers from './views/Drivers';
 import Orders from './views/Orders';
 import RoutesPage from './views/Routes';
-import Login from './components/Login';
-import Trips from './views/Trips';
-import { UserContext } from './services/context/contextProvider';
 import Home from './views/Home';
-import './index.css'
-import jwtDecode, { JwtPayload } from 'jwt-decode';
+import Trips from './views/Trips';
+import Login from './components/Login';
+import './App.css';
+// import 'rsuite/dist/rsuite.min.css';
+
+
+
 
 const App = () => {
 
@@ -18,14 +21,12 @@ const App = () => {
 
     const { user, setUser } = useContext(UserContext);
     console.log('user', user || '');
-    // console.log(localStorage)
 
     const token = JSON.parse(JSON.stringify(localStorage.getItem(`token`)) || '{}');
     const login = JSON.parse(JSON.stringify(localStorage.getItem(`login`)) || '{}');
 
     useEffect(() => {
         const decodedToken = getDecodedToken(token)
-        // console.log(decodedToken)
         if (decodedToken !== undefined) {
             const isValid = getIsValid(decodedToken.exp)
             if (isValid === true) {
@@ -38,7 +39,6 @@ const App = () => {
     const getIsValid = (expDateUnix: any) => {
         const curUnix = +new Date()/1000
         if (expDateUnix>curUnix) {
-            // console.log(true)
             return true
         } else {
             console.log(false)
