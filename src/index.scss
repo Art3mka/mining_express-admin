@@ -1,10 +1,12 @@
 .body {
-    font-family: 'Poppins', sans-serif;
+    // font-family: 'Poppins', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 .wrapper {
+    min-height: 100%;
+    flex: 1 1 auto;
     display: flex;
 }
 
@@ -33,7 +35,7 @@
     -webkit-box-shadow: 5px 0px 10px rgba(0, 0, 0, 0.5);
     box-shadow: 5px 0px 10px rgba(0, 0, 0, 0.5);
     background: #02060a;
-    height: 70px;
+    height: 2vh;
     display: flex;
     justify-content: flex-end;
 }
