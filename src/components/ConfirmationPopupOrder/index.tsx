@@ -51,7 +51,7 @@ export const DraggableDialog = ({
     const handleDeleteOrder = async () => {
         try {
             startLoader();
-            await deleteOneOrder(deleteOrderId, token.accessToken);
+            await deleteOneOrder(deleteOrderId, token);
             finishLoader();
         } catch (error) {
             finishLoader();

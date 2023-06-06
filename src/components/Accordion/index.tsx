@@ -24,7 +24,7 @@ const Accordion = ({ title, value }: AccordionProps) => {
     const [driverData, setDriverData] = useState<Driver[]>([]);
 
     const getDriversData = async () => {
-        const data = await getDrivers(token?.accessToken);
+        const data = await getDrivers(token);
         setDriverData(data);
     };
 
@@ -46,7 +46,7 @@ const Accordion = ({ title, value }: AccordionProps) => {
             tripId,
         };
         try {
-            const data = assignDriver(assignDriverData, token?.accessToken);
+            const data = assignDriver(assignDriverData, token);
             return data;
         } catch (error) {
             console.log('error');

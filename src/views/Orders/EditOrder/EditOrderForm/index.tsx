@@ -79,7 +79,7 @@ const EditOrderForm = ({
                 arrivalTimeId: stationInfo[0].value,
             };
 
-            await updateOrder(modifyData, token.accessToken);
+            await updateOrder(modifyData, token);
             close();
         } catch (error) {
             console.error('Error');

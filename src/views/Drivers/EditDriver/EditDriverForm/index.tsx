@@ -45,7 +45,7 @@ const EditDriverForm = ({
                 data
             );
             setIsLoading(true)
-            await updateDriver(data, token.accessToken);
+            await updateDriver(data, token);
             setIsLoading(false)
             close();
         } catch (error) {

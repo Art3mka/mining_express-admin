@@ -33,7 +33,7 @@ const EditTripsForm = ({ editData, close }: EditTripsFormProps) => {
     const onSubmit = async (data: IFormInput) => {
         console.log('tripData :>> ', data);
         try {
-            await updateTrip(data, token.accessToken);
+            await updateTrip(data, token);
             close();
         } catch (error) {
             console.error(error);
