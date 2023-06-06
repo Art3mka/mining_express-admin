@@ -25,7 +25,7 @@ export const getOrders = async (token: string) => {
         url: `${url}/api/orders`,
         method: RequestEnum.GET,
         headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `bearer ${token}`,
         },
         mode: 'cors',
     });
@@ -38,10 +38,10 @@ export const getDrivers = async (token: string) => {
         url: `${url}/users`,
         method: RequestEnum.GET,
         headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `bearer ${token}`,
         },
     });
-
+    console.log(token)
     return data;
 };
 

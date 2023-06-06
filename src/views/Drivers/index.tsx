@@ -16,8 +16,7 @@ const Drivers = () => {
     const handleCloseDriver = () => setOpenCreateDriverForm(false);
 
     const getDriversData = async () => {
-        const data = await getDrivers(token?.accessToken);
-        console.log(data);
+        const data = await getDrivers(token);
         setDriverData(data);
     };
 

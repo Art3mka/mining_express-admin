@@ -14,8 +14,11 @@ const Orders = () => {
     const { user } = useContext(UserContext);
     const { token } = user;
 
+    console.log(token)
+
     const getOrdersData = async () => {
-        const data = await getOrders(token?.accessToken);
+        const data = await getOrders(token);
+        console.log(data)
         setOrderData(data);
     };
 

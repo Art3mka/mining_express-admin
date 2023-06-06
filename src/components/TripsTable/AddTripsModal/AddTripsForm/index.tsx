@@ -27,7 +27,7 @@ const AddTripsForm = ({ close }: AddTripsFormProps) => {
     const onSubmit = async (data: IFormInput) => {
         console.log('tripData :>> ', data);
         try {
-            await createTrip(data, token.accessToken);
+            await createTrip(data, token);
             close();
         } catch (error) {
             console.error(error);

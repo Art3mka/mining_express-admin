@@ -51,7 +51,7 @@ export const DraggableDialog = ({
     const handleDeleteOrder = async () => {
         try {
             startLoader();
-            await deleteDriver(deleteDriverId, token.accessToken);
+            await deleteDriver(deleteDriverId, token);
             finishLoader();
         } catch (error) {
             finishLoader();

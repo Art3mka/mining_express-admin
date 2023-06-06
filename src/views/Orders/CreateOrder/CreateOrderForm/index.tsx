@@ -45,7 +45,7 @@ const CreateOrderForm = ({ submitRef, close }: CreateOrderFormProps) => {
 
     const onSubmit = async (data: IFormInput) => {
         try {
-            await createOrder(data, token.accessToken);
+            await createOrder(data, token);
             close()
         } catch (error) {
             console.error('Error');
