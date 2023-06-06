@@ -135,8 +135,7 @@ export const assignDriver = async (postData: AssignDriver, token: string) => {
 };
 
 export const deleteTrip = async (
-    postData: string,
-    tripId: string,
+    tripId: number,
     token: string
 ) => {
     const { data } = await makeRequest({
@@ -144,8 +143,7 @@ export const deleteTrip = async (
         headers: {
             Authorization: `Bearer ${token}`,
         },
-        method: RequestEnum.PATCH,
-        data: postData,
+        method: RequestEnum.DELETE,
     });
 
     return data;
