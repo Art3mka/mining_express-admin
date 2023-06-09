@@ -24,7 +24,7 @@ const Accordion = ({ title, value }: AccordionProps) => {
     const [driverData, setDriverData] = useState<Driver[]>([]);
 
     const getDriversData = async () => {
-        const data = await getDrivers(token?.accessToken);
+        const data = await getDrivers(token);
         setDriverData(data);
     };
 
@@ -33,19 +33,6 @@ const Accordion = ({ title, value }: AccordionProps) => {
     }, []);
 
     const defenitlyTrip = tripsData.filter((trip) => value === trip.routeId);
-    console.log('driverData :>> ', tripsData);
-
-    // const trips = tripsData.map((trip) =>
-    //     Object.assign(
-    //         trip,
-    //         driverData
-    //             ?.map((route) => ({
-    //                 routeId: route.,
-    //                 label: route.label,
-    //             }))
-    //             ?.find((route) => route.routeId === trip.routeId)
-    //     )
-    // );
 
     const drivers = driverData.map((driver) => ({
         label: driver.login,
@@ -58,7 +45,7 @@ const Accordion = ({ title, value }: AccordionProps) => {
             tripId,
         };
         try {
-            const data = assignDriver(assignDriverData, token?.accessToken);
+            const data = assignDriver(assignDriverData, token);
             return data;
         } catch (error) {
             console.log('error');
@@ -74,6 +61,7 @@ const Accordion = ({ title, value }: AccordionProps) => {
                         departureTime,
                         tripId,
                         tripDate,
+                        driverId
                     }) => (
                         <List.Item>
                             <div className="info-list">
@@ -87,7 +75,9 @@ const Accordion = ({ title, value }: AccordionProps) => {
                                             data={drivers}
                                             onChange={(e: number) => {
                                                 handleAssignDriver(e, tripId!);
+                                                console.log('e :>> ', e);
                                             }}
+                                            defaultValue={driverId}
                                         />
                                     </div>
                                 </div>

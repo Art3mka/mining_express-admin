@@ -13,6 +13,7 @@ export interface ITrip {
     dayOfWeekNumber?: number;
     tripId?: number;
     tripDate?: string;
+    driverId?: number;
 }
 
 export interface AssignDriver {
