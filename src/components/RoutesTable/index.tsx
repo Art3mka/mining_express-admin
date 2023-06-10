@@ -1,73 +1,21 @@
-import React, { useMemo, useState, useEffect } from 'react'
-import MaterialReactTable, {
-    MaterialReactTableProps,
-    MRT_ColumnDef as mrtColumnDef,
-} from 'material-react-table'
-import { Routes, tableProps } from './types'
-import './index.scss'
-
-
-
-
-import { Table, Button } from 'rsuite'
-
-const { Column, HeaderCell, Cell } = Table;
+import React from 'react';
+import { Table } from 'rsuite';
+import './index.scss';
 
 
 const RoutesTable = (data: any) => {
-
-    // const [tableInfo, setTableInfo] = useState(data.data)
-
-    // debugger
-    // const sendEmail = (row: any) => {
-    //     console.log('click', row)
-    // }
-
-    // const columns = useMemo<mrtColumnDef<Routes>[]>(
-    //     () => [
-    //         {
-    //             accessorKey: 'routeId',
-    //             header: 'Номер',
-    //             size: 200,
-    //             filterVariant: 'text',
-    //         },
-    //         {
-    //             accessorKey: 'routeName',
-    //             header: 'Маршрут',
-    //             filterVariant: 'text',
-    //             size: 400,
-    //         },
-    //     ],
-    //     []
-    // )
-
-    // const [tableData, setTableData] = useState<Routes[]>(() => data)
-
-    // const handleSaveRow: MaterialReactTableProps<Routes>['onEditingRowSave'] =
-    //     async ({ exitEditingMode, row, values }) => {
-    //         tableData[row.index] = values
-
-    //         setTableData([...tableData])
-    //         exitEditingMode()
-    //     }
-
-
-    const [tableInfo, setTableInfo] = useState(data.data)
-
-    
+    const { Column, HeaderCell, Cell } = Table;
 
     return (
-
         <Table
             autoHeight={true}
-            className='table__routes'
+            className="table__routes"
             width={700}
             data={data.data || []}
-            onRowClick={rowData => {
+            onRowClick={(rowData) => {
                 console.log(rowData);
             }}
-            >
-
+        >
             <Column width={100} align="center" fixed>
                 <HeaderCell>Id</HeaderCell>
                 <Cell dataKey="value" />
@@ -77,11 +25,8 @@ const RoutesTable = (data: any) => {
                 <HeaderCell>Маршрут</HeaderCell>
                 <Cell dataKey="label" />
             </Column>
-
-           
         </Table>
+    );
+};
 
-    )
-}
-
-export default RoutesTable
+export default RoutesTable;

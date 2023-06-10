@@ -1,14 +1,11 @@
-import { useEffect, useState, useContext } from "react";
+import { useContext } from "react";
 import RoutesTable from "../../components/RoutesTable";
-import { getRoutes } from "../../services/api/api";
 import { UserContext } from "../../services/context/contextProvider";
 
-interface RoutesProps {}
 
 const Routes = () => {
 
-    const { user, routesData } = useContext(UserContext);
-    const { token } = user;
+    const { routesData } = useContext(UserContext);
 
     console.log(routesData)
 

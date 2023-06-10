@@ -1,19 +1,14 @@
 import { Table, Pagination } from 'rsuite';
-import './index.scss';
 import { useContext, useState } from 'react';
 import EditTripsMoad from './EditTripsModal';
 import AddTripsModal from './AddTripsModal';
 import { UserContext } from '../../services/context/contextProvider';
-import { ITrip } from '../../services/types';
 import Input from '../Input';
 import Tabs from '../Tabs';
 import Accordion from '../Accordion';
+import './index.scss';
 
 const { Column, HeaderCell, Cell } = Table;
-
-interface ITripsData {
-    data: ITrip[];
-}
 
 const TripsTable = () => {
     const { routesData, tripsData } = useContext(UserContext);
