@@ -3,6 +3,7 @@ import './index.scss';
 import { useContext, useState } from 'react';
 import EditTripsMoad from './EditTripsModal';
 import AddTripsModal from './AddTripsModal';
+import DeleteTripsModal from './DeleteTripsModal';
 import { UserContext } from '../../services/context/contextProvider';
 import { ITrip } from '../../services/types';
 import Input from '../Input';
@@ -136,6 +137,16 @@ const TripsTable = () => {
                                 <Cell style={{ padding: '6px' }}>
                                     {(rowData) => (
                                         <EditTripsMoad data={rowData} />
+                                    )}
+                                </Cell>
+                            </Column>
+
+                            <Column width={100} fixed="right">
+                                <HeaderCell>...</HeaderCell>
+
+                                <Cell style={{ padding: '6px' }}>
+                                    {(rowData) => (
+                                        <DeleteTripsModal data={rowData} />
                                     )}
                                 </Cell>
                             </Column>
