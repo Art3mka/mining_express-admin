@@ -36,11 +36,10 @@ const CreateDriverForm = ({ submitRef, close }: CreateDriverFormProps) => {
     const { control, handleSubmit } = useForm<IFormInput>();
     const { user } = useContext(UserContext);
     const { token } = user;
-    console.log('create driver', token.accessToken);
 
     const onSubmit = async (data: IFormInput) => {
         try {
-            await createDriver(data, token.accessToken);
+            await createDriver(data, token);
             close();
         } catch (error) {
             console.error(error);

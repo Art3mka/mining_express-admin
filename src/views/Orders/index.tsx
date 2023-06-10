@@ -15,7 +15,7 @@ const Orders = () => {
     const { token } = user;
 
     const getOrdersData = async () => {
-        const data = await getOrders(token?.accessToken);
+        const data = await getOrders(token);
         setOrderData(data);
     };
 
