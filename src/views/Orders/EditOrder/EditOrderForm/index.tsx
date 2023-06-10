@@ -58,16 +58,6 @@ const EditOrderForm = ({
 
     const onSubmit = async (data: IFormInput) => {
         try {
-            console.log('submit data :>> ', {
-                ...data,
-                departureBusStopId: defaultBusStopId,
-                routeId: defaultRoutesValue,
-                orderId: editData?.orderId,
-                //@ts-ignore
-                tripId: modifiedTripsData[0].value,
-                //@ts-ignore
-                arrivalTimeId: stationInfo[0].value,
-            });
             const modifyData = {
                 ...data,
                 departureBusStopId: defaultBusStopId,

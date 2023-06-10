@@ -18,7 +18,6 @@ const Orders = () => {
 
     const getOrdersData = async () => {
         const data = await getOrders(token);
-        console.log(data)
         setOrderData(data);
     };
 

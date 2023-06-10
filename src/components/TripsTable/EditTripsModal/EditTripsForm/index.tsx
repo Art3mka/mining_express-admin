@@ -28,10 +28,7 @@ const EditTripsForm = ({ editData, close }: EditTripsFormProps) => {
     const { user } = useContext(UserContext);
     const { token } = user;
 
-    console.log('editData :>> ', editData);
-
     const onSubmit = async (data: IFormInput) => {
-        console.log('tripData :>> ', data);
         try {
             await updateTrip(data, token);
             close();

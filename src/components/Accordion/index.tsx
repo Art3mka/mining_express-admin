@@ -33,7 +33,6 @@ const Accordion = ({ title, value }: AccordionProps) => {
     }, []);
 
     const defenitlyTrip = tripsData.filter((trip) => value === trip.routeId);
-    console.log('defenitlyTrip :>> ', defenitlyTrip);
 
     const drivers = driverData.map((driver) => ({
         label: driver.login,
@@ -60,9 +59,9 @@ const Accordion = ({ title, value }: AccordionProps) => {
                     ({
                         arrivalTime,
                         departureTime,
-                        dayOfWeekNumber,
                         tripId,
                         tripDate,
+                        driverId
                     }) => (
                         <List.Item>
                             <div className="info-list">
@@ -76,7 +75,9 @@ const Accordion = ({ title, value }: AccordionProps) => {
                                             data={drivers}
                                             onChange={(e: number) => {
                                                 handleAssignDriver(e, tripId!);
+                                                console.log('e :>> ', e);
                                             }}
+                                            defaultValue={driverId}
                                         />
                                     </div>
                                 </div>

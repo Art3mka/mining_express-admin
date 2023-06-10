@@ -10,7 +10,6 @@ import Home from './views/Home';
 import Trips from './views/Trips';
 import Login from './components/Login';
 import './App.css';
-// import 'rsuite/dist/rsuite.min.css';
 
 
 

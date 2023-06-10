@@ -1,11 +1,11 @@
 import { Route, Routes } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
-import './index.scss';
 import Sidebar from '../../components/Sidebar';
 import Drivers from '../Drivers';
 import Orders from '../Orders';
 import Trips from '../Trips';
 import RoutesPage from '../Routes';
+import './index.scss';
 
 const Home = () => {
 

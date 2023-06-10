@@ -11,7 +11,14 @@
 
         .driver {
             align-self: center;
-            margin-right: 8px!important;
+            margin-right: 8px !important;
         }
+    }
+}
+
+.second-tab {
+    .rs-panel {
+        margin-top: 8px;
+        margin-bottom: 8px;
     }
 }
