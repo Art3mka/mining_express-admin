@@ -1,0 +1,35 @@
+.sidebar {
+    width: 17rem;
+    height: 100%;
+
+    &__wrap {
+        // min-height: 100vh;
+    }
+
+    &__link {
+        display: block;
+        color: #fff;
+        padding: 1rem 1.25rem;
+
+        &:hover {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        &:focus {
+            color: #fff;
+            text-decoration: none;
+        }
+    }
+}
+
+.nav {
+    &__item {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+}
+
+.govno {
+    min-height: 100%;
+}
