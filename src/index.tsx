@@ -5,17 +5,19 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { HashRouter } from "react-router-dom";
 import ContextProvider from "./services/context/contextProvider";
+
 const root = ReactDOM.createRoot(
     document.getElementById("root") as HTMLElement
 );
+
 root.render(
-    // <React.StrictMode>
+    <React.StrictMode>
         <HashRouter>
             <ContextProvider>
                 <App />
             </ContextProvider>
         </HashRouter>
-    // </React.StrictMode>
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
