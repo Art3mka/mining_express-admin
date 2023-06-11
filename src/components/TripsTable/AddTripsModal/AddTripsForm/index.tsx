@@ -1,12 +1,12 @@
 import { Controller, useForm } from 'react-hook-form';
 import { UserContext } from '../../../../services/context/contextProvider';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { createTrip } from '../../../../services/api/api';
 import DropDown from '../../../DropDown';
-import Input from '../../../Input';
 import DatePickerCustom from '../../../DatePicker';
 import { Button, DatePicker } from 'rsuite';
 import './index.scss';
+import { NotificationTypeEnum } from '../../../../type';
 
 interface AddTripsFormProps {
     close: () => void;
@@ -21,15 +21,19 @@ interface IFormInput {
 
 const AddTripsForm = ({ close }: AddTripsFormProps) => {
     const { control, handleSubmit } = useForm<IFormInput>();
-    const { user, routesData } = useContext(UserContext);
+    const { user, routesData, setNotification } = useContext(UserContext);
     const { token } = user;
 
     const onSubmit = async (data: IFormInput) => {
-        console.log('tripData :>> ', data);
         try {
             await createTrip(data, token);
+            setNotification({ type: NotificationTypeEnum.SUCCESS });
             close();
         } catch (error) {
+            setNotification({
+                type: NotificationTypeEnum.ERROR,
+                title: 'Ошибка',
+            });
             console.error(error);
         }
     };
@@ -47,7 +51,7 @@ const AddTripsForm = ({ close }: AddTripsFormProps) => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="form">
-            <div className="container">
+            <div className="modal-container">
                 <div className="container-form">
                     <Controller
                         render={({ field }) => (
@@ -120,7 +124,9 @@ const AddTripsForm = ({ close }: AddTripsFormProps) => {
                 <Button appearance="primary" type="submit">
                     Добавить
                 </Button>
-                <Button type="button" onClick={close}>Отменить</Button>
+                <Button type="button" onClick={close}>
+                    Отменить
+                </Button>
             </div>
         </form>
     );
