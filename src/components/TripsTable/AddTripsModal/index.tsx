@@ -1,8 +1,6 @@
 import { useState } from 'react';
-import { Button, ButtonToolbar, Modal, Placeholder } from 'rsuite';
+import { Button, ButtonToolbar, Modal } from 'rsuite';
 import AddTripsForm from './AddTripsForm';
-
-interface AddTripsModalProps {}
 
 const AddTripsModal = () => {
     const [open, setOpen] = useState(false);

@@ -5,10 +5,11 @@ import { updateTrip } from '../../../../services/api/api';
 import { Button, DatePicker } from 'rsuite';
 import './index.scss';
 import Input from '../../../Input';
+import { NotificationTypeEnum } from '../../../../type';
 
 interface EditTripsFormProps {
     close: () => void;
-    editData: IFormInput
+    editData: IFormInput;
 }
 
 interface IFormInput {
@@ -25,14 +26,19 @@ const EditTripsForm = ({ editData, close }: EditTripsFormProps) => {
             departureTime: editData.departureTime,
         },
     });
-    const { user } = useContext(UserContext);
+    const { user, setNotification } = useContext(UserContext);
     const { token } = user;
 
     const onSubmit = async (data: IFormInput) => {
         try {
             await updateTrip(data, token);
+            setNotification({ type: NotificationTypeEnum.SUCCESS });
             close();
         } catch (error) {
+            setNotification({
+                type: NotificationTypeEnum.ERROR,
+                title: 'Ошибка',
+            });
             console.error(error);
         }
     };
@@ -102,7 +108,9 @@ const EditTripsForm = ({ editData, close }: EditTripsFormProps) => {
                 <Button appearance="primary" type="submit">
                     Добавить
                 </Button>
-                <Button type="button" onClick={close}>Отменить</Button>
+                <Button type="button" onClick={close}>
+                    Отменить
+                </Button>
             </div>
         </form>
     );

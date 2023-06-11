@@ -6,6 +6,7 @@ import { UserContext } from '../../../../services/context/contextProvider';
 import ModalLoader from '../../../../components/ModalLoader';
 import { Drivers } from '../../../../components/DriversTable/types';
 import { updateDriver } from '../../../../services/api/api';
+import { NotificationTypeEnum } from '../../../../type';
 
 interface IFormInput {
     login?: string;
@@ -26,7 +27,7 @@ const EditDriverForm = ({
     editData,
     close,
 }: CreateOrderFormProps) => {
-    const { user } = useContext(UserContext);
+    const { user, setNotification } = useContext(UserContext);
     const { token } = user;
     const [isLoading, setIsLoading] = useState(false);
 
@@ -41,14 +42,20 @@ const EditDriverForm = ({
 
     const onSubmit = async (data: IFormInput) => {
         try {
-            console.log('submit data :>> ', 
-                data
-            );
-            setIsLoading(true)
+            console.log('submit data :>> ', data);
+            setIsLoading(true);
             await updateDriver(data, token);
-            setIsLoading(false)
+            setIsLoading(false);
+            setNotification({
+                type: NotificationTypeEnum.ERROR,
+                title: 'Ошибка',
+            });
             close();
         } catch (error) {
+            setNotification({
+                type: NotificationTypeEnum.ERROR,
+                title: 'Ошибка',
+            });
             console.error('Error');
         }
     };

@@ -6,6 +6,7 @@ import { UserContext } from '../../../../services/context/contextProvider';
 import { createOrder, getTrips } from '../../../../services/api/api';
 import DropDown from '../../../../components/DropDown';
 import DatePicker from '../../../../components/DatePicker';
+import { NotificationTypeEnum } from '../../../../type';
 
 interface IFormInput {
     arrivalTimeId: number;
@@ -23,7 +24,7 @@ interface CreateOrderFormProps {
 }
 
 const CreateOrderForm = ({ submitRef, close }: CreateOrderFormProps) => {
-    const { user, routesData } = useContext(UserContext);
+    const { user, routesData, setNotification } = useContext(UserContext);
     const { token } = user;
 
     const [tripsData, setTripsData] = useState([]);
@@ -46,8 +47,13 @@ const CreateOrderForm = ({ submitRef, close }: CreateOrderFormProps) => {
     const onSubmit = async (data: IFormInput) => {
         try {
             await createOrder(data, token);
-            close()
+            setNotification({ type: NotificationTypeEnum.SUCCESS });
+            close();
         } catch (error) {
+            setNotification({
+                type: NotificationTypeEnum.ERROR,
+                title: 'Ошибка',
+            });
             console.error('Error');
         }
     };

@@ -9,6 +9,7 @@ import DatePicker from '../../../../components/DatePicker';
 import { Orders } from '../../../../components/Table/types';
 import { getDefaultRoutesID, getModifyStationData, seatsData } from './utils';
 import ModalLoader from '../../../../components/ModalLoader';
+import { NotificationTypeEnum } from '../../../../type';
 
 interface IFormInput {
     orderId: number;
@@ -31,11 +32,10 @@ const EditOrderForm = ({
     editData,
     close,
 }: CreateOrderFormProps) => {
-    const { user, routesData } = useContext(UserContext);
+    const { user, routesData, setNotification } = useContext(UserContext);
     const { token } = user;
     const [tripsData, setTripsData] = useState([]);
     const [depatureData, setDepatureData] = useState([]);
-    console.log('editData :>> ', editData);
     const [isLoading, setIsLoading] = useState(false);
     const [modifiedTripsData, setModifiedTripsData] = useState([]);
     const [stationInfo, setStationInfo] = useState([{ value: '' }]);
@@ -43,6 +43,7 @@ const EditOrderForm = ({
     const [stationId, setStationId] = useState('');
     const [defaultBusStopId, setDefaultBusStopId] = useState(0);
     const [boardingDate, setBoardingDate] = useState<number | undefined>();
+    console.log('editData :>> ', editData);
 
     const [defaultRoutesValue, setDefaultRoutesValue] = useState<number>();
 
@@ -70,8 +71,13 @@ const EditOrderForm = ({
             };
 
             await updateOrder(modifyData, token);
+            setNotification({ type: NotificationTypeEnum.SUCCESS });
             close();
         } catch (error) {
+            setNotification({
+                type: NotificationTypeEnum.ERROR,
+                title: 'Ошибка',
+            });
             console.error('Error');
         }
     };

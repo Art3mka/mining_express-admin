@@ -4,6 +4,7 @@ import './index.scss';
 import Input from '../../../../components/Input';
 import { UserContext } from '../../../../services/context/contextProvider';
 import { createDriver } from '../../../../services/api/api';
+import { NotificationTypeEnum } from '../../../../type';
 
 interface IFormInput {
     userId: number;
@@ -34,14 +35,22 @@ const inputData = [
 
 const CreateDriverForm = ({ submitRef, close }: CreateDriverFormProps) => {
     const { control, handleSubmit } = useForm<IFormInput>();
-    const { user } = useContext(UserContext);
+    const { user,setNotification } = useContext(UserContext);
     const { token } = user;
 
     const onSubmit = async (data: IFormInput) => {
         try {
             await createDriver(data, token);
+            setNotification({
+                type: NotificationTypeEnum.ERROR,
+                title: 'Ошибка',
+            });
             close();
         } catch (error) {
+            setNotification({
+                type: NotificationTypeEnum.ERROR,
+                title: 'Ошибка',
+            });
             console.error(error);
         }
     };
