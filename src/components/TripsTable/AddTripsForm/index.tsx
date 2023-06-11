@@ -1,12 +1,12 @@
 import { Controller, useForm } from 'react-hook-form';
-import { UserContext } from '../../../../services/context/contextProvider';
+import { UserContext } from '../../../services/context/contextProvider';
 import { useContext } from 'react';
-import { createTrip } from '../../../../services/api/api';
-import DropDown from '../../../DropDown';
-import DatePickerCustom from '../../../DatePicker';
+import { createTrip } from '../../../services/api/api';
+import DropDown from '../../DropDown';
+import DatePickerCustom from '../../DatePicker';
 import { Button, DatePicker } from 'rsuite';
 import './index.scss';
-import { NotificationTypeEnum } from '../../../../type';
+import { NotificationTypeEnum } from '../../../type';
 
 interface AddTripsFormProps {
     close: () => void;

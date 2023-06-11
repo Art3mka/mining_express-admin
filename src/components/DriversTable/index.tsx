@@ -3,7 +3,6 @@ import MaterialReactTable, {
     MRT_ColumnDef as mrtColumnDef,
 } from 'material-react-table';
 import { Drivers, tableProps } from './types';
-import './index.scss';
 import { Box, IconButton, Tooltip } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import ConfirmationLoader from '../ConfirmationLoader';

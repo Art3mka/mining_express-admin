@@ -51,7 +51,7 @@ const EditTripsForm = ({ editData, close }: EditTripsFormProps) => {
     };
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="form">
-            <div className="container">
+            <div className="modal-container">
                 <div className="container-form">
                     <Controller
                         render={({ field }) => (

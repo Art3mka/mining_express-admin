@@ -1,12 +1,13 @@
 import { Table, Pagination } from 'rsuite';
 import { useContext, useState } from 'react';
-import EditTripsMoad from './EditTripsModal';
-import AddTripsModal from './AddTripsModal';
+import EditTripsModal from './EditTripsModal';
 import { UserContext } from '../../services/context/contextProvider';
 import Input from '../Input';
 import Tabs from '../Tabs';
 import Accordion from '../Accordion';
 import './index.scss';
+import ModalComponent from '../ModalComponent';
+import AddTripsForm from './AddTripsForm';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -18,6 +19,9 @@ const TripsTable = () => {
     const [sortType, setSortType] = useState();
     const [loading, setLoading] = useState(false);
     const [active, setActive] = useState('setDrive');
+    const [openModal, setOpenModal] = useState<boolean>(false);
+    const handleClose = () => setOpenModal(false);
+    const handleOpen = () => setOpenModal(true);
 
     const handleChangeLimit = (dataKey: any) => {
         setPage(1);
@@ -99,6 +103,9 @@ const TripsTable = () => {
                             sortType={sortType}
                             onSortColumn={handleSortColumn}
                             loading={loading}
+                            onRowClick={(rowData) => {
+                                console.log(rowData);
+                            }}
                         >
                             <Column width={50} align="center" fixed sortable>
                                 <HeaderCell>Id</HeaderCell>
@@ -130,7 +137,7 @@ const TripsTable = () => {
 
                                 <Cell style={{ padding: '6px' }}>
                                     {(rowData) => (
-                                        <EditTripsMoad data={rowData} />
+                                        <EditTripsModal data={rowData} />
                                     )}
                                 </Cell>
                             </Column>
@@ -145,11 +152,7 @@ const TripsTable = () => {
                                 boundaryLinks
                                 maxButtons={5}
                                 size="xs"
-                                layout={[
-                                    'total',
-                                    '-',
-                                    'pager',
-                                ]}
+                                layout={['total', '-', 'pager']}
                                 total={tripsData.length}
                                 limitOptions={[30]}
                                 limit={limit}
@@ -160,7 +163,16 @@ const TripsTable = () => {
                         </div>
                     </div>
                     <div className="modal">
-                        <AddTripsModal />
+                        <ModalComponent
+                            handleOpen={handleOpen}
+                            handleClose={handleClose}
+                            openModal={openModal}
+                            headerTitle="Добавить рейс"
+                            appearance="primary"
+                            buttonName="Добавить рейс"
+                        >
+                            <AddTripsForm close={handleClose} />
+                        </ModalComponent>
                     </div>
                 </div>
             )}

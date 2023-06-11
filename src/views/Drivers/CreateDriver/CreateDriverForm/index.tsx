@@ -57,7 +57,7 @@ const CreateDriverForm = ({ submitRef, close }: CreateDriverFormProps) => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="form">
-            <div className="container">
+            <div className="modal-container">
                 <div className="container-form">
                     {inputData.map(({ label, key }) => (
                         <Controller

@@ -66,7 +66,7 @@ const EditDriverForm = ({
                 <ModalLoader />
             ) : (
                 <form onSubmit={handleSubmit(onSubmit)} className="form">
-                    <div className="container">
+                    <div className="modal-container">
                         <div className="container-form">
                             <Controller
                                 render={({ field }) => (
