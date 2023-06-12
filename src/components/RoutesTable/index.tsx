@@ -16,46 +16,6 @@ const { Column, HeaderCell, Cell } = Table;
 
 const RoutesTable = (data: any) => {
 
-    // const [tableInfo, setTableInfo] = useState(data.data)
-
-    // debugger
-    // const sendEmail = (row: any) => {
-    //     console.log('click', row)
-    // }
-
-    // const columns = useMemo<mrtColumnDef<Routes>[]>(
-    //     () => [
-    //         {
-    //             accessorKey: 'routeId',
-    //             header: 'Номер',
-    //             size: 200,
-    //             filterVariant: 'text',
-    //         },
-    //         {
-    //             accessorKey: 'routeName',
-    //             header: 'Маршрут',
-    //             filterVariant: 'text',
-    //             size: 400,
-    //         },
-    //     ],
-    //     []
-    // )
-
-    // const [tableData, setTableData] = useState<Routes[]>(() => data)
-
-    // const handleSaveRow: MaterialReactTableProps<Routes>['onEditingRowSave'] =
-    //     async ({ exitEditingMode, row, values }) => {
-    //         tableData[row.index] = values
-
-    //         setTableData([...tableData])
-    //         exitEditingMode()
-    //     }
-
-
-    const [tableInfo, setTableInfo] = useState(data.data)
-
-    
-
     return (
 
         <Table

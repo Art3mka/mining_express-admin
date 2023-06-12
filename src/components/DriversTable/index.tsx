@@ -1,76 +1,251 @@
-import React, { useMemo, useState } from 'react';
-import MaterialReactTable, {
-    MRT_ColumnDef as mrtColumnDef,
-} from 'material-react-table';
-import { Drivers, tableProps } from './types';
+import React, { useMemo, useState, useContext } from 'react';
+// import MaterialReactTable, {
+//     MRT_ColumnDef as mrtColumnDef,
+// } from 'material-react-table';
+// import { Drivers, tableProps } from './types';
 import './index.scss';
-import { Box, IconButton, Tooltip } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
-import ConfirmationLoader from '../ConfirmationLoader';
-import { DraggableDialog } from '../ConfirmationPopupDriver';
-import EditDriver from '../../views/Drivers/EditDriver';
+// import { Box, IconButton, Tooltip } from '@mui/material';
+// import { Delete, Edit } from '@mui/icons-material';
+// import ConfirmationLoader from '../ConfirmationLoader';
+// import { DraggableDialog } from '../ConfirmationPopupDriver';
+// import EditDriver from '../../views/Drivers/EditDriver';
+
+
+import { UserContext } from '../../services/context/contextProvider';
+import { updateDriver, deleteDriver } from '../../services/api/api';
+import { Table, Button } from 'rsuite';
+
+
+
+
+
+
+const { Column, HeaderCell, Cell } = Table;
+
+
+interface IEditableCell {
+    dataKey: string;
+    onChange: (id: any, key: any, value: any) => void;
+}
+
+interface IActionCell {
+    dataKey: string;
+    onClick: (id: any) => void;
+}
+
+//@ts-ignore
+const EditableCell = ({ rowData, dataKey, onChange, ...props }: IEditableCell) => {
+    const editing = rowData.status === 'EDIT';
+    return (
+        <Cell {...props} className={editing ? 'table-content-editing' : ''}>
+            {editing ? (
+                <input
+                    className="rs-input"
+                    defaultValue={rowData[dataKey]}
+                    onChange={event => {
+                        onChange && onChange(rowData.userId, dataKey, event.target.value);
+                    }}
+                />
+            ) : (
+                <span className="table-content-edit-span">{rowData[dataKey]}</span>
+            )}
+        </Cell>
+    );
+}
+
+//@ts-ignore
+const ActionCell = ({ rowData, dataKey, onClick, ...props }: IActionCell) => {
+
+    return (
+        <Cell {...props} style={{ padding: '6px' }}>
+            <Button
+                appearance="link"
+                onClick={() => {
+                    onClick(rowData.userId);
+                    console.log(rowData.status)
+                }}
+            >
+                {rowData.status === 'EDIT' ? 'Save' : 'Edit'}
+            </Button>
+        </Cell>
+    );
+};
+
+//@ts-ignore
+const DeleteCell = ({ rowData, dataKey, onClick, ...props }: IActionCell) => {
+
+    return (
+        <Cell {...props} style={{ padding: '6px' }}>
+            <Button
+                appearance="link"
+                onClick={() => {
+                    onClick(rowData.userId);
+                }}
+            >
+                Delete
+            </Button>
+        </Cell>
+    );
+};
+
+
 
 const DriversTable = (data: any, close: () => void) => {
-    const [openGroup, setOpenGroup] = useState(false);
-    const [editData, setEditData] = useState<Drivers>();
-    const [isOpenConfirm, setIsOpenConfirm] = useState<boolean>(false);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [deleteDriverId, setDeleteDriverId] = useState<number>(0);
+    // const [openGroup, setOpenGroup] = useState(false);
+    // const [editData, setEditData] = useState<Drivers>();
+    // const [isOpenConfirm, setIsOpenConfirm] = useState<boolean>(false);
+    // const [isLoading, setIsLoading] = useState<boolean>(false);
+    // const [deleteDriverId, setDeleteDriverId] = useState<number>(0);
 
-    const columns = useMemo<mrtColumnDef<Drivers>[]>(
-        () => [
-            {
-                accessorKey: 'userId',
-                header: 'Номер',
-                size: 50,
-                filterVariant: 'text', 
-            },
-            {
-                accessorKey: 'login',
-                header: 'Login',
-                filterVariant: 'text',
-                size: 200,
-            },
-            {
-                accessorKey: 'phone',
-                header: 'Телефон',
-                size: 300,
-                filterVariant: 'text',
-            },
-            {
-                accessorKey: 'password',
-                header: 'Password',
-                size: 200,
-                filterVariant: 'text',
-            },
-        ],
-        []
-    );
+    const [tableData, setTableData] = useState(data.data)
 
-    const handleDeleteRow = async (row: any) => {
-        const { original } = row;
-        setDeleteDriverId(original.userId);
-        setIsOpenConfirm(true);
-        console.log('original.orderId ', original.userId);
+    const { user } = useContext(UserContext);
+    const { token } = user;
+
+    // const columns = useMemo<mrtColumnDef<Drivers>[]>(
+    //     () => [
+    //         {
+    //             accessorKey: 'userId',
+    //             header: 'Номер',
+    //             size: 50,
+    //             filterVariant: 'text',
+    //         },
+    //         {
+    //             accessorKey: 'login',
+    //             header: 'Login',
+    //             filterVariant: 'text',
+    //             size: 200,
+    //         },
+    //         {
+    //             accessorKey: 'phone',
+    //             header: 'Телефон',
+    //             size: 300,
+    //             filterVariant: 'text',
+    //         },
+    //         {
+    //             accessorKey: 'password',
+    //             header: 'Password',
+    //             size: 200,
+    //             filterVariant: 'text',
+    //         },
+    //     ],
+    //     []
+    // );
+
+    // const handleDeleteRow = async (row: any) => {
+    //     const { original } = row;
+    //     setDeleteDriverId(original.userId);
+    //     setIsOpenConfirm(true);
+    //     console.log('original.orderId ', original.userId);
+    // };
+
+    // const handleOpenOrder = () => setOpenGroup(true);
+
+    // const handleCloseOrder = () => setOpenGroup(false);
+
+    // const handleCloseConfirm = () => setIsOpenConfirm(false);
+
+    // const handleStartLoading = () => setIsLoading(true);
+    // const handleFinishLoading = () => setIsLoading(false);
+
+
+
+
+
+
+
+    //@ts-ignore
+    const handleChange = (id, key, value) => {
+        const nextData = Object.assign([], data.data);
+        nextData.find((item: any) => item.userId === id)[key] = value;
+        setTableData(nextData);
     };
 
-    const handleOpenOrder = () => setOpenGroup(true);
+    //@ts-ignore
+    const handleEditState = async (id) => {
+        try {
+            const nextData = Object.assign([], data.data);
+            const activeItem = nextData.find((item: any) => item.userId === id);
+            activeItem.status = activeItem.status ? null : 'EDIT';
+            const updateData = JSON.parse(JSON.stringify(activeItem))
+            setTableData(nextData);
+            delete updateData.status;
+            await updateDriver(updateData, token);
+        } catch (error) {
+            console.log(error)
+        }
 
-    const handleCloseOrder = () => setOpenGroup(false);
+    };
 
-    const handleCloseConfirm = () => setIsOpenConfirm(false);
+    //@ts-ignore
+    const handleDeleteState = async (id) => {
+        try {
+            const nextData = Object.assign([], data.data);
+            const activeItem = nextData.find((item: any) => item.userId === id);
+            setTableData(nextData);
+            await deleteDriver(activeItem.userId, token);
+        } catch (error) {
+            console.log(error)
+        }
 
-    const handleStartLoading = () => setIsLoading(true);
-    const handleFinishLoading = () => setIsLoading(false);
+    };
 
     return (
         <>
-            <EditDriver
+            {/* <EditDriver
                 open={openGroup}
                 editData={editData}
                 close={handleCloseOrder}
                 closeEdit={close}
-            />
+            /> */}
+
+
+            <Table
+                autoHeight={true}
+                className='table__drivers'
+                width={1600}
+                data={data.data || tableData || []}
+            >
+
+                <Column width={100} align="center" fixed>
+                    <HeaderCell>Id</HeaderCell>
+                    <EditableCell dataKey="userId" onChange={handleChange} />
+                </Column>
+
+                <Column width={200} align="center" fixed>
+                    <HeaderCell>Логин</HeaderCell>
+                    <EditableCell dataKey="login" onChange={handleChange} />
+                </Column>
+
+                <Column width={200} align="center" fixed>
+                    <HeaderCell>Телефон</HeaderCell>
+                    <EditableCell dataKey="phone" onChange={handleChange} />
+                </Column>
+
+                <Column width={200} align="center" fixed>
+                    <HeaderCell>Пароль</HeaderCell>
+                    <EditableCell dataKey="password" onChange={handleChange} />
+                </Column>
+
+                <Column width={200} align="center" fixed>
+                    <HeaderCell>...</HeaderCell>
+                    <ActionCell dataKey="userId" onClick={handleEditState} />
+                </Column>
+
+                <Column width={200} align="center" fixed>
+                    <HeaderCell>...</HeaderCell>
+                    <DeleteCell dataKey="userId" onClick={handleDeleteState} />
+                </Column>
+
+            </Table>
+
+
+
+
+
+
+
+{/* 
             <MaterialReactTable
                 {...tableProps}
                 columns={columns}
@@ -118,7 +293,7 @@ const DriversTable = (data: any, close: () => void) => {
                 startLoader={handleStartLoading}
                 finishLoader={handleFinishLoading}
                 deleteDriverId={deleteDriverId}
-            />
+            /> */}
         </>
     );
 };
