@@ -65,7 +65,7 @@ const ActionCell = ({ rowData, dataKey, onClick, ...props }: IActionCell) => {
                     console.log(rowData.status)
                 }}
             >
-                {rowData.status === 'EDIT' ? 'Save' : 'Edit'}
+                {rowData.status === 'EDIT' ? 'Сохранить' : 'Изменить'}
             </Button>
         </Cell>
     );
@@ -82,7 +82,7 @@ const DeleteCell = ({ rowData, dataKey, onClick, ...props }: IActionCell) => {
                     onClick(rowData.userId);
                 }}
             >
-                Delete
+                Удалить
             </Button>
         </Cell>
     );
